@@ -1,0 +1,165 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0{
+        /* Reference: https://github.com/ikwzm/fclkcfg
+
+              Name  | Index
+              ------+-------
+              iopll | 0
+              rpll  | 1
+              dpll  | 8
+              pl0   | 71
+              pl1   | 72
+              pl2   | 73
+              pl3   | 74
+
+             The 2nd item listed in 'clocks' property is the parent: either
+             iopll, rpll, or dpll.
+
+             Note: this driver rounds up whereas Vivado rounds down. For
+                   example, if the parent is iopll (1500 Mhz), and you desire
+                   200 Mhz, Vivado will use a divider of 8, but the driver
+                   will use a divider by 7. So you get, 187.5 Mhz vs 214.3 Mhz,
+                   respectively.
+
+                   As a result, I set the desired frequency to 185Mhz instead
+                   of 200, so that I get the same timing as Vivado.
+         */
+      
+        target = <&amba>;
+        __overlay__ {
+            fclk0 {
+                compatible    = "ikwzm,fclkcfg";
+                device-name   = "fpga-clk0";
+                clocks        = <&zynqmp_clk 71>, <&zynqmp_clk 0>;
+                insert-rate   = "100000000";
+                insert-enable = <1>;
+                remove-enable = <0>;
+            };
+            fclk1 {
+                compatible    = "ikwzm,fclkcfg";
+                device-name   = "fpga-clk1";
+                clocks        = <&zynqmp_clk 72>, <&zynqmp_clk 0>;
+                insert-rate   = "185000000";
+                insert-enable = <1>;
+                remove-enable = <0>;
+            };
+            fclk2 {
+                compatible    = "ikwzm,fclkcfg";
+                device-name   = "fpga-clk2";
+                clocks        = <&zynqmp_clk 73>, <&zynqmp_clk 0>;
+                insert-rate   = "100000000";
+                insert-enable = <1>;
+                remove-enable = <0>;
+            };
+            fclk3 {
+                compatible    = "ikwzm,fclkcfg";
+                device-name   = "fpga-clk3";
+                clocks        = <&zynqmp_clk 74>, <&zynqmp_clk 0>;
+                insert-rate   = "100000000";
+                insert-enable = <1>;
+                remove-enable = <0>;
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&spi0>;
+        __overlay__ {
+           #include "oxygen-transceiver-spi.dtsi" 
+        };
+    };
+
+    fragment@2 {
+        target = <&i2c1>;
+        __overlay__ {
+           #include "oxygenbt-personality-i2c.dtsi"
+           #include "oxygen-transceiver-i2c.dtsi"
+        };
+    };
+
+    fragment@3 {
+        target = <&fpga_axi>;
+        __overlay__ {
+            interrupt-parent = <&gic>;
+            compatible = "simple-bus";
+            #address-cells = <0x1>;
+            #size-cells = <0x1>;
+            ranges = <0 0 0 0xffffffff>;
+
+            rx_dma: dma@9c400000 {
+                compatible = "adi,axi-dmac-1.00.a";
+                reg = <0x9c400000 0x10000>;
+                #dma-cells = <1>;
+                #clock-cells = <0>;
+                interrupts = <0 109 4>;
+                clocks = <&zynqmp_clk 71>;
+
+                adi,channels {
+                    #size-cells = <0>;
+                    #address-cells = <1>;
+
+                    dma-channel@0 {
+                        reg = <0>;
+                        adi,source-bus-width = <64>;
+                        adi,source-bus-type = <2>;
+                        adi,destination-bus-width = <64>;
+                        adi,destination-bus-type = <0>;
+                    };
+                };
+            };
+
+            tx_dma: dma@9c420000  {
+                compatible = "adi,axi-dmac-1.00.a";
+                reg = <0x9c420000 0x10000>;
+                #dma-cells = <1>;
+                #clock-cells = <0>;
+                interrupts = <0 108 4>;
+                clocks = <&zynqmp_clk 71>;
+
+                adi,channels {
+                    #size-cells = <0>;
+                    #address-cells = <1>;
+
+                    dma-channel@0 {
+                        reg = <0>;
+                        adi,source-bus-width = <64>;
+                        adi,source-bus-type = <0>;
+                        adi,destination-bus-width = <64>;
+                        adi,destination-bus-type = <2>;
+                    };
+                };
+            };
+
+            cf_ad9361_adc_core_0: cf-ad9361-lpc@99020000 {
+                compatible = "adi,axi-ad9361-6.00.a";
+                reg = <0x99020000 0x6000>;
+                dmas = <&rx_dma 0>;
+                dma-names = "rx";
+                spibus-connected = <&adc0_ad9361>;
+            };
+
+            cf_ad9361_dac_core_0: cf-ad9361-dds-core-lpc@99024000 {
+                compatible = "adi,axi-ad9361-dds-6.00.a";
+                reg = <0x99024000 0x1000>;
+                clocks = <&adc0_ad9361 13>;
+                clock-names = "sampl_clk";
+                dmas = <&tx_dma 0>;
+                dma-names = "tx";
+            };
+        };
+    };
+    fragment@4 {
+        target =  <&uart1>; 
+        __overlay__ {
+	                  cts-override ;
+	                  device_type = "serial";
+	                  port-number = <1>;
+	                  status = "okay";
+	                  u-boot,dm-pre-reloc ;
+                    };
+                
+            };
+};

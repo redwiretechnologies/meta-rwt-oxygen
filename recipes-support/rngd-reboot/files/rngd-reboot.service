@@ -1,0 +1,11 @@
+[Unit]
+Description=Force kill rngd
+DefaultDependencies=no
+After=final.target
+
+[Service]
+Type=oneshot
+ExecStart=killall -9 rngd
+
+[Install]
+WantedBy=final.target

@@ -1,0 +1,87 @@
+From patchwork Fri Apr 17 09:28:53 2020
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: Sascha Hauer <s.hauer@pengutronix.de>
+X-Patchwork-Id: 11494589
+Return-Path: <SRS0=fRLa=6B=vger.kernel.org=linux-hwmon-owner@kernel.org>
+Received: from mail.kernel.org (pdx-korg-mail-1.web.codeaurora.org
+ [172.30.200.123])
+	by pdx-korg-patchwork-2.web.codeaurora.org (Postfix) with ESMTP id 4BC89912
+	for <patchwork-linux-hwmon@patchwork.kernel.org>;
+ Fri, 17 Apr 2020 09:29:02 +0000 (UTC)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.kernel.org (Postfix) with ESMTP id 3E58F221EA
+	for <patchwork-linux-hwmon@patchwork.kernel.org>;
+ Fri, 17 Apr 2020 09:29:02 +0000 (UTC)
+Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
+        id S1730226AbgDQJ3C (ORCPT
+        <rfc822;patchwork-linux-hwmon@patchwork.kernel.org>);
+        Fri, 17 Apr 2020 05:29:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729987AbgDQJ3B (ORCPT
+        <rfc822;linux-hwmon@vger.kernel.org>);
+        Fri, 17 Apr 2020 05:29:01 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B7BC061A0C
+        for <linux-hwmon@vger.kernel.org>;
+ Fri, 17 Apr 2020 02:29:01 -0700 (PDT)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+        by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1jPNIy-0007b9-AW; Fri, 17 Apr 2020 11:29:00 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1jPNIw-0000sh-Lu; Fri, 17 Apr 2020 11:28:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: linux-hwmon@vger.kernel.org
+Cc: Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] hwmon: (jc42) Fix name to have no illegal characters
+Date: Fri, 17 Apr 2020 11:28:53 +0200
+Message-Id: <20200417092853.31206-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.26.1
+MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-hwmon@vger.kernel.org
+Sender: linux-hwmon-owner@vger.kernel.org
+Precedence: bulk
+List-ID: <linux-hwmon.vger.kernel.org>
+X-Mailing-List: linux-hwmon@vger.kernel.org
+
+The jc42 driver passes I2C client's name as hwmon device name. In case
+of device tree probed devices this ends up being part of the compatible
+string, "jc-42.4-temp". This name contains hyphens and the hwmon core
+doesn't like this:
+
+jc42 2-0018: hwmon: 'jc-42.4-temp' is not a valid name attribute, please fix
+
+This changes the name to "jc42" which doesn't have any illegal
+characters.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/hwmon/jc42.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/jc42.c b/drivers/hwmon/jc42.c
+index f2d81b0558e5..e3f1ebee7130 100644
+--- a/drivers/hwmon/jc42.c
++++ b/drivers/hwmon/jc42.c
+@@ -506,7 +506,7 @@ static int jc42_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	}
+ 	data->config = config;
+ 
+-	hwmon_dev = devm_hwmon_device_register_with_info(dev, client->name,
++	hwmon_dev = devm_hwmon_device_register_with_info(dev, "jc42",
+ 							 data, &jc42_chip_info,
+ 							 NULL);
+ 	return PTR_ERR_OR_ZERO(hwmon_dev);

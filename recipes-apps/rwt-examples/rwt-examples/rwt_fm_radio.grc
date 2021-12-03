@@ -1,0 +1,192 @@
+options:
+  parameters:
+    author: Toby Flynn
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: 2021 Red Wire Technologies
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: RWT_FM_Radio
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Red Wire Technologies FM Demo
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: frequency
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: frequency
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '87'
+    step: '.1'
+    stop: '108'
+    value: '107.7'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [712, 88.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '192000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12]
+    rotation: 0
+    state: enabled
+- name: volume
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Volume
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0.2'
+    step: '0.1'
+    stop: '2'
+    value: '.2'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1016, 192.0]
+    rotation: 0
+    state: true
+- name: analog_fm_demod_cf_0
+  id: analog_fm_demod_cf
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_decim: '4'
+    audio_pass: '16000'
+    audio_stop: '20000'
+    chan_rate: samp_rate
+    comment: ''
+    deviation: '75000'
+    gain: '1.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    tau: 75e-6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [768, 292.0]
+    rotation: 0
+    state: true
+- name: blocks_multiply_const_xx_0
+  id: blocks_multiply_const_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: volume
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1000, 344.0]
+    rotation: 0
+    state: true
+- name: rwt_source_0
+  id: rwt_source
+  parameters:
+    affinity: ''
+    alias: ''
+    auto_filter: 'True'
+    bandwidth: int(4e5)
+    base_addr: '0x9D000000'
+    bbdc: 'True'
+    buffer_size: '32000'
+    bypass_enable: 'False'
+    comment: ''
+    correction_enable: 'True'
+    escape: '0xAAAAAAAAAAAAAAAA'
+    extra: ''
+    filter: ''
+    force_reload: 'False'
+    freq: frequency*1e6
+    gain_mode: manual
+    manual_gain: '32.0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    rfport1: A_BALANCED
+    rfport2: A_BALANCED
+    rx1_en: 'True'
+    rx2_en: 'False'
+    samplerate: samp_rate
+    use_tags: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 288.0]
+    rotation: 0
+    state: true
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: tcp://192.168.10.1:50010
+    affinity: ''
+    alias: ''
+    comment: ''
+    hwm: '-1'
+    pass_tags: 'False'
+    timeout: '100'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1232, 348.0]
+    rotation: 0
+    state: true
+
+connections:
+- [analog_fm_demod_cf_0, '0', blocks_multiply_const_xx_0, '0']
+- [blocks_multiply_const_xx_0, '0', zeromq_pub_sink_0, '0']
+- [rwt_source_0, '0', analog_fm_demod_cf_0, '0']
+
+metadata:
+  file_format: 1

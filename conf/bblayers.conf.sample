@@ -1,0 +1,22 @@
+# POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+# changes incompatibly
+POKY_BBLAYERS_CONF_VERSION = "2"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  ##COREBASE##/../poky/meta \
+  ##COREBASE##/../poky/meta-poky \
+  ##COREBASE##/../meta-openembedded/meta-oe \
+  ##COREBASE##/../meta-openembedded/meta-python \
+  ##COREBASE##/../meta-openembedded/meta-networking \
+  ##COREBASE##/../meta-openembedded/meta-filesystems \
+  ##COREBASE##/../meta-xilinx/meta-xilinx-bsp \
+  ##COREBASE##/../meta-xilinx/meta-xilinx-contrib \
+  ##COREBASE##/../meta-xilinx-tools \
+  ##COREBASE##/../meta-qt5 \
+  ##COREBASE##/../meta-sdr \
+  ##COREBASE##/../meta-rwt-common \
+  ##COREBASE##/../meta-rwt-oxygen \
+  "

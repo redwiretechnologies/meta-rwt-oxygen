@@ -1,0 +1,26 @@
+From 15b21c23b3da2bc7f208721111ab54bd5ac8884e Mon Sep 17 00:00:00 2001
+From: toby <tflynn@redwiretechnology.com>
+Date: Tue, 29 Sep 2020 09:33:16 -0400
+Subject: [PATCH] addin boot env
+
+---
+ board/xilinx/zynqmp/zynqmp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/board/xilinx/zynqmp/zynqmp.c b/board/xilinx/zynqmp/zynqmp.c
+index 853f4f9aba..e93e375553 100644
+--- a/board/xilinx/zynqmp/zynqmp.c
++++ b/board/xilinx/zynqmp/zynqmp.c
+@@ -702,7 +702,11 @@ int board_late_init(void)
+ 			env_targets ? env_targets : "");
+ 
+ 	env_set("boot_targets", new_targets);
+-
++#if defined(CONFIG_FPGA) && defined(CONFIG_FPGA_ZYNQMPPL) && \
++	    !defined(CONFIG_SPL_BUILD) || (defined(CONFIG_SPL_FPGA_SUPPORT) && \
++			        defined(CONFIG_SPL_BUILD))
++        env_set("fpgadev",  &zynqmppl.name[2]);
++#endif
+ 	initrd_hi = gd->start_addr_sp - CONFIG_STACK_SIZE;
+ 	initrd_hi = round_down(initrd_hi, SZ_16M);
+ 	env_set_addr("initrd_high", (void *)initrd_hi);

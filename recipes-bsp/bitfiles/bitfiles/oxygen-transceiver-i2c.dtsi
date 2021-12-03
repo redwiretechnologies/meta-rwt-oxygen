@@ -1,0 +1,5 @@
+
+mcp4661@28 {
+  compatible = "microchip,mcp4661-104";
+  reg = <0x20>;
+};

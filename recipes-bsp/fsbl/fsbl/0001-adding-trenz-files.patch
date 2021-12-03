@@ -1,0 +1,2263 @@
+From 5811760768c69761ea8b94e3c05ce8323056e96c Mon Sep 17 00:00:00 2001
+From: toby <tflynn@redwiretechnology.com>
+Date: Fri, 25 Sep 2020 10:06:21 -0400
+Subject: [PATCH] adding trenz files
+
+---
+ .../zynqmp_fsbl/src/te_Si5338-Registers.h     | 436 +++++++++++++++
+ .../zynqmp_fsbl/src/te_iic_define_te0820.h    |  69 +++
+ lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.c | 512 ++++++++++++++++++
+ lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.h |  60 ++
+ lib/sw_apps/zynqmp_fsbl/src/te_si5338.c       |  78 +++
+ lib/sw_apps/zynqmp_fsbl/src/te_si5338.h       |  34 ++
+ lib/sw_apps/zynqmp_fsbl/src/te_uart.c         |  47 ++
+ lib/sw_apps/zynqmp_fsbl/src/te_uart.h         |  40 ++
+ lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.c  | 169 ++++++
+ lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.h  |  61 +++
+ .../zynqmp_fsbl/src/te_xfsbl_hooks_te0820.c   | 408 ++++++++++++++
+ .../zynqmp_fsbl/src/te_xfsbl_hooks_te0820.h   |  74 +++
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c     |   4 +
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h     |   4 +
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.c     |  52 +-
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.h     |   4 +-
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_main.c      |  15 +-
+ 17 files changed, 2045 insertions(+), 22 deletions(-)
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_Si5338-Registers.h
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_iic_define_te0820.h
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.c
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.h
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_si5338.c
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_si5338.h
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_uart.c
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_uart.h
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.c
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.h
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.c
+ create mode 100644 lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.h
+
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_Si5338-Registers.h b/lib/sw_apps/zynqmp_fsbl/src/te_Si5338-Registers.h
+new file mode 100644
+index 0000000000..92345e4e70
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_Si5338-Registers.h
+@@ -0,0 +1,436 @@
++//Register map for use with AN428 (JumpStart)
++//http://www.silabs.com/clocks 
++//Copyright 2012 Silicon Laboratories
++//#BEGIN_HEADER
++//Date = Tuesday, February 11, 2020 3:41 PM
++//File version = 3
++//Software Name = ClockBuilder Desktop
++//Software version = 6.5
++//Software date = June 4, 2015
++//Chip = Si533x
++//Part Number = Si533x
++//#END_HEADER
++//Input Frequency (MHz) = 25.000000000
++//Input Type = CMOS_SSTL_HSTL
++//P1 = 1
++//Input Mux = RefClk
++//FDBK Input Frequency (MHz) = 25.000000000
++//FDBK Input Type = OFF
++//P2 = 1
++//FDBK Mux = NoClk
++//PFD Input Frequency (MHz) = 25.000000000
++//VCO Frequency (GHz) = 2.400000
++//N = 96  (96.0000)
++//Internal feedback enabled
++//Output Clock 0
++// Output Frequency (MHz) = 200.000000000
++// Mux Selection = IDn
++// MultiSynth = 12  (12.0000)
++// R = 1
++//Output Clock 1
++// Output Frequency (MHz) = 125.000000000
++// Mux Selection = IDn
++// MultiSynth = 19  1/5  (19.2000)
++// R = 1
++//Output Clock 2
++// Output Frequency (MHz) = 125.000000000
++// Mux Selection = IDn
++// MultiSynth = 19  1/5  (19.2000)
++// R = 1
++//Output Clock 3
++// Output is off
++//Driver 0
++// Enabled
++// Powered on
++// Output voltage = 1.80
++// Output type = 1.8V LVDS
++// Output state when disabled = StopLow
++//Driver 1
++// Enabled
++// Powered on
++// Output voltage = 1.80
++// Output type = 1.8V LVDS
++// Output state when disabled = StopLow
++//Driver 2
++// Enabled
++// Powered on
++// Output voltage = 1.80
++// Output type = 1.8V LVDS
++// Output state when disabled = StopLow
++//Driver 3
++// Disabled
++// Powered off
++// Output voltage = 3.30
++// Output type = 3.3V LVDS
++// Output state when disabled = StopLow
++//Clock 0 phase inc/dec step size (ns) = 0.000
++//Clock 1 phase inc/dec step size (ns) = 0.000
++//Clock 2 phase inc/dec step size (ns) = 0.000
++//Clock 3 phase inc/dec step size (ns) = 0.000
++//Phase increment and decrement pin control is off
++//Frequency increment and decrement pin control is off
++//Frequency increment and decrement is disabled
++//Initial phase offset 0 (ns) = 0.000
++//Initial phase offset 1 (ns) = 0.000
++//Initial phase offset 2 (ns) = 0.000
++//Initial phase offset 3 (ns) = 0.000
++
++#define NUM_REGS_MAX 350
++
++typedef struct Reg_Data{
++   unsigned char Reg_Addr;
++   unsigned char Reg_Val;
++   unsigned char Reg_Mask;
++} Reg_Data;
++
++Reg_Data const code Reg_Store[NUM_REGS_MAX] = {
++{  0,0x00,0x00},
++{  1,0x00,0x00},
++{  2,0x00,0x00},
++{  3,0x00,0x00},
++{  4,0x00,0x00},
++{  5,0x00,0x00},
++{  6,0x08,0x1D},
++{  7,0x00,0x00},
++{  8,0x70,0x00},
++{  9,0x0F,0x00},
++{ 10,0x00,0x00},
++{ 11,0x00,0x00},
++{ 12,0x00,0x00},
++{ 13,0x00,0x00},
++{ 14,0xF1,0x00},
++{ 15,0x65,0x00},
++{ 16,0x00,0x00},
++{ 17,0x00,0x00},
++{ 18,0x00,0x00},
++{ 19,0x00,0x00},
++{ 20,0x00,0x00},
++{ 21,0x00,0x00},
++{ 22,0x00,0x00},
++{ 23,0x00,0x00},
++{ 24,0xE6,0x00},
++{ 25,0x08,0x00},
++{ 26,0x00,0x00},
++{ 27,0x70,0x80},
++{ 28,0x0B,0xFF},
++{ 29,0x08,0xFF},
++{ 30,0xB0,0xFF},
++{ 31,0xC0,0xFF},
++{ 32,0xC0,0xFF},
++{ 33,0xC0,0xFF},
++{ 34,0xE3,0xFF},
++{ 35,0x2A,0xFF},
++{ 36,0x06,0x1F},
++{ 37,0x06,0x1F},
++{ 38,0x06,0x1F},
++{ 39,0x00,0x1F},
++{ 40,0x84,0xFF},
++{ 41,0x90,0x7F},
++{ 42,0x23,0x3F},
++{ 43,0x00,0x00},
++{ 44,0x00,0x00},
++{ 45,0x00,0xFF},
++{ 46,0x00,0xFF},
++{ 47,0x14,0x3F},
++{ 48,0x2F,0xFF},
++{ 49,0x90,0xFF},
++{ 50,0xC5,0xFF},
++{ 51,0x07,0xFF},
++{ 52,0x10,0xFF},
++{ 53,0x00,0xFF},
++{ 54,0x04,0xFF},
++{ 55,0x00,0xFF},
++{ 56,0x00,0xFF},
++{ 57,0x00,0xFF},
++{ 58,0x00,0xFF},
++{ 59,0x01,0xFF},
++{ 60,0x00,0xFF},
++{ 61,0x00,0xFF},
++{ 62,0x00,0x3F},
++{ 63,0x10,0xFF},
++{ 64,0x99,0xFF},
++{ 65,0x07,0xFF},
++{ 66,0x0C,0xFF},
++{ 67,0x00,0xFF},
++{ 68,0x00,0xFF},
++{ 69,0x00,0xFF},
++{ 70,0x05,0xFF},
++{ 71,0x00,0xFF},
++{ 72,0x00,0xFF},
++{ 73,0x00,0x3F},
++{ 74,0x10,0xFF},
++{ 75,0x99,0xFF},
++{ 76,0x07,0xFF},
++{ 77,0x0C,0xFF},
++{ 78,0x00,0xFF},
++{ 79,0x00,0xFF},
++{ 80,0x00,0xFF},
++{ 81,0x05,0xFF},
++{ 82,0x00,0xFF},
++{ 83,0x00,0xFF},
++{ 84,0x00,0x3F},
++{ 85,0x10,0xFF},
++{ 86,0x00,0xFF},
++{ 87,0x00,0xFF},
++{ 88,0x00,0xFF},
++{ 89,0x00,0xFF},
++{ 90,0x00,0xFF},
++{ 91,0x00,0xFF},
++{ 92,0x00,0xFF},
++{ 93,0x00,0xFF},
++{ 94,0x00,0xFF},
++{ 95,0x00,0x3F},
++{ 96,0x10,0x00},
++{ 97,0x00,0xFF},
++{ 98,0x2E,0xFF},
++{ 99,0x00,0xFF},
++{100,0x00,0xFF},
++{101,0x00,0xFF},
++{102,0x00,0xFF},
++{103,0x01,0xFF},
++{104,0x00,0xFF},
++{105,0x00,0xFF},
++{106,0x80,0xBF},
++{107,0x00,0xFF},
++{108,0x00,0xFF},
++{109,0x00,0xFF},
++{110,0x40,0xFF},
++{111,0x00,0xFF},
++{112,0x00,0xFF},
++{113,0x00,0xFF},
++{114,0x40,0xFF},
++{115,0x00,0xFF},
++{116,0x80,0xFF},
++{117,0x00,0xFF},
++{118,0x40,0xFF},
++{119,0x00,0xFF},
++{120,0x00,0xFF},
++{121,0x00,0xFF},
++{122,0x40,0xFF},
++{123,0x00,0xFF},
++{124,0x00,0xFF},
++{125,0x00,0xFF},
++{126,0x00,0xFF},
++{127,0x00,0xFF},
++{128,0x00,0xFF},
++{129,0x00,0x0F},
++{130,0x00,0x0F},
++{131,0x00,0xFF},
++{132,0x00,0xFF},
++{133,0x00,0xFF},
++{134,0x00,0xFF},
++{135,0x00,0xFF},
++{136,0x00,0xFF},
++{137,0x00,0xFF},
++{138,0x00,0xFF},
++{139,0x00,0xFF},
++{140,0x00,0xFF},
++{141,0x00,0xFF},
++{142,0x00,0xFF},
++{143,0x00,0xFF},
++{144,0x00,0xFF},
++{145,0x00,0x00},
++{146,0xFF,0x00},
++{147,0x00,0x00},
++{148,0x00,0x00},
++{149,0x00,0x00},
++{150,0x00,0x00},
++{151,0x00,0x00},
++{152,0x00,0xFF},
++{153,0x00,0xFF},
++{154,0x00,0xFF},
++{155,0x00,0xFF},
++{156,0x00,0xFF},
++{157,0x00,0xFF},
++{158,0x00,0x0F},
++{159,0x00,0x0F},
++{160,0x00,0xFF},
++{161,0x00,0xFF},
++{162,0x00,0xFF},
++{163,0x00,0xFF},
++{164,0x00,0xFF},
++{165,0x00,0xFF},
++{166,0x00,0xFF},
++{167,0x00,0xFF},
++{168,0x00,0xFF},
++{169,0x00,0xFF},
++{170,0x00,0xFF},
++{171,0x00,0xFF},
++{172,0x00,0xFF},
++{173,0x00,0xFF},
++{174,0x00,0xFF},
++{175,0x00,0xFF},
++{176,0x00,0xFF},
++{177,0x00,0xFF},
++{178,0x00,0xFF},
++{179,0x00,0xFF},
++{180,0x00,0xFF},
++{181,0x00,0x0F},
++{182,0x00,0xFF},
++{183,0x00,0xFF},
++{184,0x00,0xFF},
++{185,0x00,0xFF},
++{186,0x00,0xFF},
++{187,0x00,0xFF},
++{188,0x00,0xFF},
++{189,0x00,0xFF},
++{190,0x00,0xFF},
++{191,0x00,0xFF},
++{192,0x00,0xFF},
++{193,0x00,0xFF},
++{194,0x00,0xFF},
++{195,0x00,0xFF},
++{196,0x00,0xFF},
++{197,0x00,0xFF},
++{198,0x00,0xFF},
++{199,0x00,0xFF},
++{200,0x00,0xFF},
++{201,0x00,0xFF},
++{202,0x00,0xFF},
++{203,0x00,0x0F},
++{204,0x00,0xFF},
++{205,0x00,0xFF},
++{206,0x00,0xFF},
++{207,0x00,0xFF},
++{208,0x00,0xFF},
++{209,0x00,0xFF},
++{210,0x00,0xFF},
++{211,0x00,0xFF},
++{212,0x00,0xFF},
++{213,0x00,0xFF},
++{214,0x00,0xFF},
++{215,0x00,0xFF},
++{216,0x00,0xFF},
++{217,0x00,0xFF},
++{218,0x00,0x00},
++{219,0x00,0x00},
++{220,0x00,0x00},
++{221,0x0D,0x00},
++{222,0x00,0x00},
++{223,0x00,0x00},
++{224,0xF4,0x00},
++{225,0xF0,0x00},
++{226,0x00,0x00},
++{227,0x00,0x00},
++{228,0x00,0x00},
++{229,0x00,0x00},
++{231,0x00,0x00},
++{232,0x00,0x00},
++{233,0x00,0x00},
++{234,0x00,0x00},
++{235,0x00,0x00},
++{236,0x00,0x00},
++{237,0x00,0x00},
++{238,0x14,0x00},
++{239,0x00,0x00},
++{240,0x00,0x00},
++{242,0x02,0x02},
++{243,0xF0,0x00},
++{244,0x00,0x00},
++{245,0x00,0x00},
++{247,0x00,0x00},
++{248,0x00,0x00},
++{249,0xA8,0x00},
++{250,0x00,0x00},
++{251,0x84,0x00},
++{252,0x00,0x00},
++{253,0x00,0x00},
++{254,0x00,0x00},
++{255, 1, 0xFF}, // set page bit to 1 
++{  0,0x00,0x00},
++{  1,0x00,0x00},
++{  2,0x00,0x00},
++{  3,0x00,0x00},
++{  4,0x00,0x00},
++{  5,0x00,0x00},
++{  6,0x00,0x00},
++{  7,0x00,0x00},
++{  8,0x00,0x00},
++{  9,0x00,0x00},
++{ 10,0x00,0x00},
++{ 11,0x00,0x00},
++{ 12,0x00,0x00},
++{ 13,0x00,0x00},
++{ 14,0x00,0x00},
++{ 15,0x00,0x00},
++{ 16,0x00,0x00},
++{ 17,0x01,0x00},
++{ 18,0x00,0x00},
++{ 19,0x00,0x00},
++{ 20,0x90,0x00},
++{ 21,0x31,0x00},
++{ 22,0x00,0x00},
++{ 23,0x00,0x00},
++{ 24,0x01,0x00},
++{ 25,0x00,0x00},
++{ 26,0x00,0x00},
++{ 27,0x00,0x00},
++{ 28,0x00,0x00},
++{ 29,0x00,0x00},
++{ 30,0x00,0x00},
++{ 31,0x00,0xFF},
++{ 32,0x00,0xFF},
++{ 33,0x01,0xFF},
++{ 34,0x00,0xFF},
++{ 35,0x00,0xFF},
++{ 36,0x90,0xFF},
++{ 37,0x31,0xFF},
++{ 38,0x00,0xFF},
++{ 39,0x00,0xFF},
++{ 40,0x01,0xFF},
++{ 41,0x00,0xFF},
++{ 42,0x00,0xFF},
++{ 43,0x00,0x0F},
++{ 44,0x00,0x00},
++{ 45,0x00,0x00},
++{ 46,0x00,0x00},
++{ 47,0x00,0xFF},
++{ 48,0x00,0xFF},
++{ 49,0x01,0xFF},
++{ 50,0x00,0xFF},
++{ 51,0x00,0xFF},
++{ 52,0x90,0xFF},
++{ 53,0x31,0xFF},
++{ 54,0x00,0xFF},
++{ 55,0x00,0xFF},
++{ 56,0x01,0xFF},
++{ 57,0x00,0xFF},
++{ 58,0x00,0xFF},
++{ 59,0x00,0x0F},
++{ 60,0x00,0x00},
++{ 61,0x00,0x00},
++{ 62,0x00,0x00},
++{ 63,0x00,0xFF},
++{ 64,0x00,0xFF},
++{ 65,0x01,0xFF},
++{ 66,0x00,0xFF},
++{ 67,0x00,0xFF},
++{ 68,0x90,0xFF},
++{ 69,0x31,0xFF},
++{ 70,0x00,0xFF},
++{ 71,0x00,0xFF},
++{ 72,0x01,0xFF},
++{ 73,0x00,0xFF},
++{ 74,0x00,0xFF},
++{ 75,0x00,0x0F},
++{ 76,0x00,0x00},
++{ 77,0x00,0x00},
++{ 78,0x00,0x00},
++{ 79,0x00,0xFF},
++{ 80,0x00,0xFF},
++{ 81,0x00,0xFF},
++{ 82,0x00,0xFF},
++{ 83,0x00,0xFF},
++{ 84,0x90,0xFF},
++{ 85,0x31,0xFF},
++{ 86,0x00,0xFF},
++{ 87,0x00,0xFF},
++{ 88,0x01,0xFF},
++{ 89,0x00,0xFF},
++{ 90,0x00,0xFF},
++{ 91,0x00,0x0F},
++{ 92,0x00,0x00},
++{ 93,0x00,0x00},
++{ 94,0x00,0x00},
++{255, 0, 0xFF} }; // set page bit to 0
++//End of file
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_iic_define_te0820.h b/lib/sw_apps/zynqmp_fsbl/src/te_iic_define_te0820.h
+new file mode 100644
+index 0000000000..683e45e009
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_iic_define_te0820.h
+@@ -0,0 +1,69 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++
++#ifndef SRC_TE_IIC_DEFINE_H_
++#define SRC_TE_IIC_DEFINE_H_
++
++/* Board specific settings - General example*/
++
++/* use own 'main' function */
++#define TE_STANDALONE
++
++/* Define clock chip */
++// #define CLOCK_SI5345
++// #define NVM_CODE /* for SI5345: NVM writing is limited!,  you do it on your own risk!*/
++
++#define CLOCK_SI5338
++
++
++/* IIC interface type definition (use one that pass) */
++// #define IIC_TYPE_AXI_IIC
++// #define IIC_BASE_ADDRESS	XPAR_IIC_0_BASEADDR
++
++//#define IIC_TYPE_ZYNQPS_IIC
++//#define XIICPS_DEVICE_ID	XPAR_XIICPS_0_DEVICE_ID
++
++#define IIC_TYPE_ZYNQUPS_IIC
++#define XIICPS_DEVICE_ID	XPAR_XIICPS_0_DEVICE_ID
++
++//#define IIC_TYPE_MCS_GPIO_IIC
++//#define GPIO_SDA_PIN	0
++//#define GPIO_SCL_PIN	1
++
++//#define IIC_TYPE_AXI_GPIO_IIC
++//#define GPIO_DEVICE_ID	XPAR_GPIO_0_DEVICE_ID
++//#define GPIO_CHANNEL	0
++//#define GPIO_SDA_PIN	0
++//#define GPIO_SCL_PIN	1
++
++//#define IIC_TYPE_PS_GPIO_IIC
++//#define GPIO_DEVICE_ID	XPAR_XGPIOPS_0_DEVICE_ID
++//#define GPIO_SDA_PIN	0
++//#define GPIO_SCL_PIN	1
++
++/* Define IIC clock speed */
++#define IIC_SCLK_RATE			400000
++
++
++/* UART interface type definition (use one that pass) */
++
++// #define UART_TYPE_AXI_UARTLITE
++// #define UART_DEVICE_ID			XPAR_AXI_UARTLITE_0_DEVICE_ID
++
++//#define UART_TYPE_AXI_UART16550
++//#define UART_DEVICE_ID			XPAR_UARTNS550_0_DEVICE_ID
++
++//#define UART_TYPE_ZYNQPS_UART
++//#define UART_DEVICE_ID			XPAR_XUARTPS_0_DEVICE_ID
++
++#define UART_TYPE_ZYNQUPS_UART
++#define UART_DEVICE_ID			XPAR_XUARTPS_0_DEVICE_ID
++
++//#define UART_TYPE_NO_UART
++
++/* Define UART baudrate */
++#define UART_BAUDRATE			115200
++
++#endif /* SRC_TE_IIC_DEFINE_H_ */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.c b/lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.c
+new file mode 100644
+index 0000000000..2f262b6958
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.c
+@@ -0,0 +1,512 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++#include "te_iic_platform.h"
++#include "te_uart.h"
++
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_AXI_IIC
++int iic_init(void)
++{
++	int Status;
++	u32 StatusReg;
++
++	/* Initialize the IIC Core. */
++	Status = XIic_DynInit(IIC_BASE_ADDRESS);
++	if (Status != XST_SUCCESS) {
++		p_printf(("IIC Controller Init failure\r\n"));
++		return XST_FAILURE;
++	}
++	/* Make sure all the Fifo's are cleared and Bus is Not busy. */
++	while (((StatusReg = XIic_ReadReg(IIC_BASE_ADDRESS,
++				XIIC_SR_REG_OFFSET)) &
++				(XIIC_SR_RX_FIFO_EMPTY_MASK |
++				XIIC_SR_TX_FIFO_EMPTY_MASK |
++				XIIC_SR_BUS_BUSY_MASK)) !=
++				(XIIC_SR_RX_FIFO_EMPTY_MASK |
++				XIIC_SR_TX_FIFO_EMPTY_MASK)) {
++	}
++	return Status;
++}
++
++int iic_write8(unsigned char chip_addr, unsigned char reg_addr, unsigned char reg_val)
++{
++	int Status;
++	u8 SentByteCount;
++	u8 WriteBuffer[2];
++
++	WriteBuffer[0] = (u8) (reg_addr);
++	WriteBuffer[1] = (u8) (reg_val);
++	Status = XST_SUCCESS;
++
++	SentByteCount = XIic_DynSend(IIC_BASE_ADDRESS, chip_addr, WriteBuffer, 2, XIIC_STOP);
++
++	if(SentByteCount != 2){	// All bits
++		Status = XST_FAILURE;
++	}
++	return Status;
++}
++
++int iic_read8(unsigned char chip_addr, unsigned char reg_addr, unsigned char *reg_val)
++{
++	u8 SentByteCount;
++	u8 ReceivedByteCount;
++	u8 WriteBuffer = reg_addr;
++
++	#ifdef DEBUG_MSG
++	p_printf(("iic_read8: addr 0x%04x\r\n", reg_addr));
++	#endif
++	SentByteCount = XIic_DynSend(IIC_BASE_ADDRESS, chip_addr, &WriteBuffer, 1, XIIC_STOP);
++	if(SentByteCount != 1){
++		return XST_FAILURE;
++	}
++	ReceivedByteCount = XIic_DynRecv(IIC_BASE_ADDRESS, chip_addr, reg_val, 1);
++	#ifdef DEBUG_MSG
++	p_printf(("iic_read8: received %d bytes = 0x%02x\r\n", ReceivedByteCount, reg_val[0]));
++	#endif
++	if(ReceivedByteCount != 1){
++		return XST_FAILURE;
++	}
++	return XST_SUCCESS;
++}
++
++void iic_delay(int delay_ms){
++	volatile int i;
++	for(i=0;i<(delay_ms*1000000);i++);
++}
++
++#endif /* IIC_TYPE_AXI_IIC */
++
++/*----------------------------------------------------------------------------*/
++#if defined(IIC_TYPE_ZYNQPS_IIC) || defined(IIC_TYPE_ZYNQUPS_IIC)
++int iic_init(void)
++{
++	XIicPs_Config *I2cCfgPtr;
++	int Status = XST_SUCCESS;
++
++	I2cCfgPtr = XIicPs_LookupConfig(XIICPS_DEVICE_ID);
++
++	if (I2cCfgPtr == NULL){
++		p_printf(("IIC Controller lookup failure\r\n"));
++		return XST_FAILURE;
++	}
++
++	Status = XIicPs_CfgInitialize(&I2cInstancePtr, I2cCfgPtr, I2cCfgPtr->BaseAddress);
++	if (Status != XST_SUCCESS) {
++		p_printf(("IIC Controller Init failure\r\n"));
++		return XST_FAILURE;
++	}
++
++	XIicPs_SetSClk(&I2cInstancePtr, IIC_SCLK_RATE);
++	return Status;
++}
++
++int iic_write8(unsigned char chip_addr, unsigned char reg_addr, unsigned char reg_val)
++{
++    u8 WriteBuffer[10];
++	int Status;
++
++	WriteBuffer[0] = reg_addr;
++	WriteBuffer[1] = reg_val;
++    Status = XIicPs_MasterSendPolled(&I2cInstancePtr, WriteBuffer, 2, chip_addr);
++    if (Status != XST_SUCCESS) {
++		return Status;
++    }
++
++    // Wait until bus is idle to start another transfer
++    while (XIicPs_BusIsBusy(&I2cInstancePtr)) {};
++
++	return XST_SUCCESS;
++}
++
++int iic_read8(unsigned char chip_addr, unsigned char reg_addr, unsigned char *data)
++{
++	u8 wr_data;
++	wr_data = reg_addr;
++	XIicPs_MasterSendPolled(&I2cInstancePtr, &wr_data, 1, chip_addr);
++	XIicPs_MasterRecvPolled(&I2cInstancePtr, data, 1, chip_addr);
++	while (XIicPs_BusIsBusy(&I2cInstancePtr));
++	return 0;
++}
++
++void iic_delay(int delay_ms){
++	usleep(delay_ms*1000);
++}
++
++#endif /* IIC_TYPE_ZYNQPS_IIC IIC_TYPE_ZYNQUPS_IIC */
++
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_MCS_GPIO_IIC
++
++
++void gpio_set_pin(unsigned int pin, unsigned int value)
++{
++	static unsigned int gpio_shadow = 0;
++	if(value == 0)
++	{
++		gpio_shadow &= ~(1 << pin);
++	}
++	else
++	{
++		gpio_shadow |= (1 << pin);
++	}
++	XIo_Out32(GPIO_OUT_REG, gpio_shadow);
++}
++
++u8 gpio_get_pin(unsigned int pin)
++{
++	if((XIo_In32(GPIO_IN_REG) & (1 << pin)) != 0)
++	{
++		return 1;
++	}
++	return 0; 
++}
++
++int iic_init(void)
++{
++	gpio_set_pin(GPIO_SDA_PIN, 1);
++	gpio_set_pin(GPIO_SCL_PIN, 1);
++  return 0; 
++}
++
++#endif /* IIC_TYPE_MCS_GPIO_IIC */
++
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_AXI_GPIO_IIC
++int iic_init(void)
++{
++	int Status;
++	u32 dir;
++	Status = XGpio_Initialize(&Gpio, GPIO_DEVICE_ID);
++	// SCL and SDA should have PULL UP
++	dir = XGpio_GetDataDirection(&Gpio, GPIO_CHANNEL);
++	dir |= (GPIO_SDA_PIN | GPIO_SCL_PIN);
++	// Set Direction to IN
++	XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL, dir);
++	// Set Values to 0
++	XGpio_DiscreteClear(&Gpio, GPIO_CHANNEL, GPIO_SDA_PIN);
++	XGpio_DiscreteClear(&Gpio, GPIO_CHANNEL, GPIO_SCL_PIN);
++
++	return Status;
++}
++
++void gpio_set_pin(unsigned int pin, unsigned int value)
++{
++	u32 dir;
++	dir = XGpio_GetDataDirection(&Gpio, GPIO_CHANNEL);
++	if(value == 0){	// Set direction to OUT
++		dir &= ~value;
++		XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL, dir);
++	}
++	else{			// Set direction to IN
++		dir |= value;
++		XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL, dir);
++	}
++}
++
++u8 gpio_get_pin(unsigned int pin)
++{
++	if(XGpio_DiscreteRead(&Gpio, GPIO_CHANNEL) | pin){
++		return 1;
++	}
++	else{
++		return 0;
++	}
++}
++
++#endif /* IIC_TYPE_AXI_GPIO_IIC */
++
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_PS_GPIO_IIC
++
++int iic_init(void)
++{
++	int Status;
++	XGpioPs_Config *ConfigPtr;
++
++	ConfigPtr = XGpioPs_LookupConfig(GPIO_DEVICE_ID);
++	Status = XGpioPs_CfgInitialize(&Gpio, ConfigPtr, ConfigPtr->BaseAddr);
++	// Set Direction to IN
++	XGpioPs_SetDirectionPin(&Gpio, GPIO_SDA_PIN, 0);
++	XGpioPs_SetDirectionPin(&Gpio, GPIO_SCL_PIN, 0);
++	// Output disable
++	XGpioPs_SetOutputEnablePin(&Gpio, GPIO_SDA_PIN, 0);
++	XGpioPs_SetOutputEnablePin(&Gpio, GPIO_SCL_PIN, 0);
++	// Set Values to 0
++	XGpioPs_WritePin(&Gpio, GPIO_SDA_PIN, 0);
++	XGpioPs_WritePin(&Gpio, GPIO_SCL_PIN, 0);
++
++	return Status;
++}
++
++void gpio_set_pin(unsigned int pin, unsigned int value)
++{
++	if(value == 0){	// Set direction to OUT
++		// Set Direction to IN
++		XGpioPs_SetDirectionPin(&Gpio, value, 1);
++		// Output enable
++		XGpioPs_SetOutputEnablePin(&Gpio, value, 1);
++	}
++	else{			// Set direction to IN
++		// Set Direction to IN
++		XGpioPs_SetDirectionPin(&Gpio, value, 0);
++		// Output disable
++		XGpioPs_SetOutputEnablePin(&Gpio, value, 0);
++	}
++}
++
++u8 gpio_get_pin(unsigned int pin)
++{
++	if(XGpioPs_ReadPin(&Gpio, Output_Pin) | pin)
++	{
++		return 1;
++	}
++	else{
++		return 0;
++	}
++}
++
++#endif /* IIC_TYPE_PS_GPIO_IIC */
++
++/*----------------------------------------------------------------------------*/
++/* Common functions for all GPIOs implementation */
++#if defined(IIC_TYPE_MCS_GPIO_IIC) || defined(IIC_TYPE_AXI_GPIO_IIC) || defined(IIC_TYPE_PS_GPIO_IIC)
++
++void iic_dly(){
++	volatile int i;
++	for(i=0;i<(1000);i++){
++	}
++}
++
++void iic_delay(int delay_ms){
++	volatile int i;
++	for(i=0;i<(delay_ms*1000000);i++);
++}
++
++void iic_start(void)
++{
++	gpio_set_pin(GPIO_SDA_PIN, 1);	// Pull SDA High 
++	gpio_set_pin(GPIO_SCL_PIN, 1);	// Pull SCL High 
++	gpio_set_pin(GPIO_SDA_PIN, 0);	// pull SDA low
++	iic_dly();
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// pull SCL low
++	iic_dly();
++}
++
++void iic_stop(void)
++{
++	gpio_set_pin(GPIO_SDA_PIN, 0);	// Pull SDA low
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// Ensure SCL low
++	iic_dly();
++	gpio_set_pin(GPIO_SCL_PIN, 1);	// Pull SCL High 
++	iic_dly();
++	gpio_set_pin(GPIO_SDA_PIN, 1);	// Pull SDA High 
++	iic_dly();
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// Pull SCL low
++	iic_dly();
++}
++
++void iic_send_bit(u8 value)
++{
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// Ensure that SCL is low
++	gpio_set_pin(GPIO_SDA_PIN, value);	// Set data
++	iic_dly();
++	gpio_set_pin(GPIO_SCL_PIN, 1);	// Pull SCL High 
++	iic_dly();
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// Pull SCL low
++}
++
++u8 iic_receive_bit()
++{
++	u8 rcv_data;
++	
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// Ensure that SCL is low
++	gpio_set_pin(GPIO_SDA_PIN, 1);	// Pull SDA High 
++	iic_dly();
++	gpio_set_pin(GPIO_SCL_PIN, 1);	// Pull SCL High 
++	iic_dly();
++	rcv_data = gpio_get_pin(GPIO_SDA_PIN);
++	gpio_set_pin(GPIO_SCL_PIN, 0);	// Pull SCL low
++	return rcv_data;
++}
++
++u8 iic_write(u8 value)
++{
++	u8 i;
++	u8 shifter = value;
++	
++	for(i = 0; i < 8; i++)
++	{
++		iic_send_bit(shifter >> 7);
++		shifter = shifter << 1;
++	}
++	return iic_receive_bit();
++}
++
++u8 iic_read(u8 ack)
++{
++	u8 i, shifter;
++	
++	for (i = 0; i < 8; i++)		// loop through each bit
++	{
++		shifter = shifter << 1;
++		shifter |= iic_receive_bit();
++	}
++	iic_send_bit(ack);			// Send ACK/NACK
++	return shifter;
++}
++
++int iic_write8(unsigned char chip_addr, unsigned char reg_addr, unsigned char reg_val)
++{
++	int Status = 0;
++	
++	iic_start();
++	Status = iic_write(chip_addr << 1);		// Chip addr & Write 
++	if(Status != 0)							// No ACK from chip
++	{
++		p_printf(("IIC Write: no ACK from Slave\r\n"));
++		return 1;
++	}
++	Status = iic_write(reg_addr);			// Register address
++	if(Status != 0)							// No ACK from chip
++	{
++		p_printf(("IIC Write: no ACK from Slave\r\n"));
++		return 1;
++	}
++	Status = iic_write(reg_val);			// Register data
++	if(Status != 0)							// No ACK from chip
++	{
++		p_printf(("IIC Write: no ACK from Slave\r\n"));
++		return 1;
++	}
++	iic_stop();
++	return 0;
++}
++
++
++int iic_read8(unsigned char chip_addr, unsigned char reg_addr, unsigned char *data)
++{
++	int Status = 0;
++	
++	iic_start();
++	Status = iic_write(chip_addr << 1);		// Chip addr & Write 
++	if(Status != 0)							// No ACK from chip
++	{
++		p_printf(("IIC Write: no ACK from Slave\r\n"));
++		return 1;
++	}
++	Status = iic_write(reg_addr);			// Register address
++	if(Status != 0)							// No ACK from chip
++	{
++		p_printf(("IIC Write: no ACK from Slave\r\n"));
++		return 1;
++	}
++	iic_start();							// Repeated start
++	Status = iic_write((chip_addr << 1) | 0x01);	// Chip addr & Read
++	if(Status != 0)							// No ACK from chip
++	{
++		return 1;
++	}
++	*data = iic_read(1);						// NACK
++	iic_stop();
++	return 0;
++}
++
++#endif
++
++/*----------------------------------------------------------------------------*/
++/* Platform independent functions */
++int iic_write8_mask(unsigned char chip_addr, unsigned char reg_addr, unsigned char reg_val, unsigned char mask)
++{
++	int Status;
++	u8 rd_val;
++
++	if(mask == 0xFF){				// All bits
++		iic_write8(chip_addr, reg_addr, reg_val);
++	}
++	else{							// Write by mask
++		Status = iic_read8(chip_addr, reg_addr, &rd_val);
++		if(Status != XST_SUCCESS){
++			return Status;
++		}
++		rd_val &= ~mask;			// Clear bits to write
++		rd_val |= reg_val & mask;	// Set bits by mask
++		Status = iic_write8(chip_addr, reg_addr, rd_val);
++		if(Status != XST_SUCCESS){
++			return Status;
++		}
++	}
++	return XST_SUCCESS;
++}
++
++int iic_write16(unsigned char chip_addr, unsigned short reg_addr, unsigned char reg_val)
++{
++	int Status;
++	u8 page, addr;
++	static int _last_page = -1;
++
++	page = (u8) (reg_addr >> 8);
++	#ifdef DEBUG_MSG
++	p_printf(("iic_write16: addr 0x%04x data 0x%02x page 0x%02x (0x%02x) addr 0x%02x [%d]\r\n", reg_addr, reg_val, page, _last_page, (reg_addr & 0xFF), total++));
++	#endif
++
++	if (_last_page < 0 || _last_page != page) {		// New page
++		#ifdef DEBUG_MSG
++		p_printf(("p\r\n"));
++		#endif
++		Status = iic_write8(chip_addr, 0x01, page);
++		if (Status != XST_SUCCESS) {
++			p_printf(("iic_write16 page write failure\r\n"));
++			return XST_FAILURE;
++		}
++	}
++	_last_page = page;
++
++	#ifdef DEBUG_MSG
++	p_printf(("r\r\n"));
++	#endif
++	addr = (u8) reg_addr & 0xFF;
++	Status = iic_write8(chip_addr, addr, reg_val);
++	if (Status != XST_SUCCESS) {
++		p_printf(("iic_write16 reg write failure\r\n"));
++		return XST_FAILURE;
++	}
++	return Status;
++}
++
++int iic_read16(unsigned char chip_addr, unsigned short reg_addr, unsigned char *reg_val)
++{
++	int Status;
++	u8 page, addr;
++	static int _last_page = -1;
++
++	page = (u8) (reg_addr >> 8);
++	#ifdef DEBUG_MSG
++	p_printf(("iic_read16: addr 0x%04x page 0x%02x (0x%02x) addr 0x%02x\r\n", reg_addr, page, _last_page, (reg_addr & 0xFF)));
++	#endif
++
++	if (_last_page < 0 || _last_page != page) {		// New page
++		#ifdef DEBUG_MSG
++		p_printf(("p\r\n"));
++		#endif
++		Status = iic_write8(chip_addr, 0x01, page);
++		if (Status != XST_SUCCESS) {
++			p_printf(("iic_read16 page write failure\r\n"));
++			return XST_FAILURE;
++		}
++	}
++	_last_page = page;
++
++	#ifdef DEBUG_MSG
++	p_printf(("r\r\n"));
++	#endif
++	addr = (u8) reg_addr & 0xFF;
++	Status = iic_read8(chip_addr, addr, reg_val);
++	if (Status != XST_SUCCESS) {
++		p_printf(("iic_read16 reg read failure\r\n"));
++		return XST_FAILURE;
++	}
++	return Status;
++}
++/*----------------------------------------------------------------------------*/
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.h b/lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.h
+new file mode 100644
+index 0000000000..54e6c93295
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_iic_platform.h
+@@ -0,0 +1,60 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++#ifndef IIC_PLATFORM_H_
++#define IIC_PLATFORM_H_
++#include "xparameters.h"
++
++/* Include board specific settings */
++// #include "te_iic_define.h"
++#include "te_iic_define_te0820.h"
++
++/* Enable extra Debug messages */
++//#define DEBUG_MSG
++/*----------------------------------------------------------------------------*/
++int iic_init(void);
++int iic_write8(unsigned char chip_addr, unsigned char reg_addr, unsigned char reg_val);
++int iic_read8(unsigned char chip_addr, unsigned char reg_addr, unsigned char *reg_val);
++int iic_write8_mask(unsigned char chip_addr, unsigned char reg_addr, unsigned char reg_val, unsigned char mask);
++int iic_write16(unsigned char chip_addr, unsigned short reg_addr, unsigned char reg_val);
++int iic_read16(unsigned char chip_addr, unsigned short reg_addr, unsigned char *reg_val);
++void iic_delay(int delay_ms);
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_AXI_IIC
++#include "xiic.h"
++#endif /* IIC_TYPE_AXI_IIC */
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_ZYNQPS_IIC
++#include "xiicps.h"
++#include <unistd.h>
++#include <stdio.h>
++XIicPs I2cInstancePtr;
++#endif /* IIC_TYPE_ZYNQPS_IIC */
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_ZYNQUPS_IIC
++#include "xiicps.h"
++#include <sleep.h>
++#include <stdio.h>
++XIicPs I2cInstancePtr;
++#endif /* IIC_TYPE_ZYNQUPS_IIC */
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_MCS_GPIO_IIC
++#include "xiomodule_l.h"
++#include "xstatus.h"
++#include "xio.h"
++#define GPIO_OUT_REG	XPAR_IOMODULE_SINGLE_BASEADDR + XGO_OUT_OFFSET
++#define GPIO_IN_REG		XPAR_IOMODULE_SINGLE_BASEADDR + XGI_IN_OFFSET
++#endif /* IIC_TYPE_MCS_GPIO_IIC */
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_AXI_GPIO_IIC
++#include "xgpio.h"
++XGpio Gpio;
++#endif /* IIC_TYPE_AXI_GPIO_IIC */
++/*----------------------------------------------------------------------------*/
++#ifdef IIC_TYPE_PS_GPIO_IIC
++#include "xgpiops.h"
++XGpioPs Gpio;
++#endif /* IIC_TYPE_PS_GPIO_IIC */
++/*----------------------------------------------------------------------------*/
++#endif /* IIC_PLATFORM_H_ */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_si5338.c b/lib/sw_apps/zynqmp_fsbl/src/te_si5338.c
+new file mode 100644
+index 0000000000..c41f6beb5f
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_si5338.c
+@@ -0,0 +1,78 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++
++#include "te_si5338.h"
++
++#ifdef CLOCK_SI5338
++#include "te_uart.h"
++#include "te_Si5338-Registers.h"
++
++int si5338_init(unsigned char chip_addr)
++{
++	int i;
++	u8 reg_val;
++	Reg_Data rd;
++	int Status;
++
++    // p_printf(("Si5338 Init Start.\r\n"));
++    // iic_init();
++    p_printf(("Si5338 Init Registers Write.\r\n"));
++
++	// I2C Programming Procedure
++	iic_write8( chip_addr, 246, 0x01);					//Hard reset
++	// Disable Outputs
++	iic_write8_mask( chip_addr, 230, EOB_ALL, EOB_ALL);	// EOB_ALL = 1
++	// Pause LOL
++	iic_write8_mask( chip_addr, 241, DIS_LOL, DIS_LOL);	// DIS_LOL = 1
++	// Write new configuration to device accounting for the write-allowed mask
++	for(i=0; i<NUM_REGS_MAX; i++){
++		rd = Reg_Store[i];
++		iic_write8_mask( chip_addr, rd.Reg_Addr, rd.Reg_Val, rd.Reg_Mask);
++	}
++	// Validate clock input status
++//	reg_val = iic_read8( chip_addr , 218) & LOS_MASK;
++	do{
++		Status = iic_read8( chip_addr , 218, &reg_val);
++        if(Status != XST_SUCCESS) {
++            p_printf(("si5338_init: Can't read register\r\n"));
++            return Status;
++        }
++	}
++	while((reg_val & LOS_MASK) != 0);
++
++	// Configure PLL for locking
++	iic_write8_mask( chip_addr, 49, 0, FCAL_OVRD_EN);	//FCAL_OVRD_EN = 0
++	// Initiate Locking of PLL
++	iic_write8( chip_addr, 246, SOFT_RESET);			//SOFT_RESET = 1
++	iic_delay(25);											// Wait 25 ms
++	// Restart LOL
++	iic_write8_mask( chip_addr, 241, 0, DIS_LOL);		// DIS_LOL = 0
++	iic_write8( chip_addr, 241, 0x65);				// Set reg 241 = 0x65
++	// Confirm PLL lock status
++	do{
++		Status = iic_read8( chip_addr, 218, &reg_val);
++        if(Status != XST_SUCCESS) {
++            p_printf(("si5338_init: Can't read register\r\n"));
++            return Status;
++        }
++	}
++	while((reg_val & LOCK_MASK) != 0);
++	//copy FCAL values to active registers
++	Status = iic_read8( chip_addr, 237, &reg_val);
++	iic_write8_mask( chip_addr, 47, reg_val, 0x03);	// 237[1:0] to 47[1:0]
++	Status = iic_read8( chip_addr, 236, &reg_val);
++	iic_write8( chip_addr, 46, reg_val);	// 236[7:0] to 46[7:0]
++	Status = iic_read8( chip_addr, 235, &reg_val);
++	iic_write8( chip_addr, 45, reg_val);	// 235[7:0] to 45[7:0]
++	iic_write8_mask( chip_addr, 47, 0x14, 0xFC);		// Set 47[7:2] = 000101b
++	// Set PLL to use FCAL values
++	iic_write8_mask( chip_addr, 49, FCAL_OVRD_EN, FCAL_OVRD_EN);	//FCAL_OVRD_EN = 1
++	// Enable Outputs
++	iic_write8( chip_addr, 230, 0x00);					//EOB_ALL = 0
++    p_printf(("Si5338 Init Complete\r\n"));
++	return XST_SUCCESS;
++}
++
++#endif
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_si5338.h b/lib/sw_apps/zynqmp_fsbl/src/te_si5338.h
+new file mode 100644
+index 0000000000..4a17e9cede
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_si5338.h
+@@ -0,0 +1,34 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++
++#ifndef SRC_SI5338_H_
++#define SRC_SI5338_H_
++
++#define code
++
++#include "te_iic_platform.h"
++#ifdef CLOCK_SI5338
++
++
++// #define SI5338_CHIP_ADDR		0x70
++
++#define TEST_REG_ADDR			0x00
++
++#define LOS_MASK_IN1IN2IN3		0x04
++#define LOS_MASK				LOS_MASK_IN1IN2IN3
++#define PLL_LOL					0x10
++#define LOS_FDBK				0x08
++#define LOS_CLKIN				0x04
++#define SYS_CAL					0x01
++#define LOCK_MASK				(PLL_LOL | LOS_CLKIN | SYS_CAL)
++#define FCAL_OVRD_EN			0x80
++#define SOFT_RESET				0x02
++#define EOB_ALL					0x10
++#define DIS_LOL					0x80
++
++int si5338_init(unsigned char chip_addr);
++
++#endif /* CLOCK_SI5338 */
++#endif /* SRC_SI5338_H_ */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_uart.c b/lib/sw_apps/zynqmp_fsbl/src/te_uart.c
+new file mode 100644
+index 0000000000..d93472dc5c
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_uart.c
+@@ -0,0 +1,47 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++#include "te_uart.h"
++
++/*----------------------------------------------------------------------------*/
++#ifdef UART_TYPE_AXI_UARTLITE
++u8 uart_read_char(void){
++	u8 u;
++    XUartLite_Initialize(&UartLite, UART_DEVICE_ID);
++    while(!XUartLite_Recv(&UartLite, &u, 1)){
++    }
++	return u;
++}
++#endif /* UART_TYPE_AXI_UARTLITE */
++/*----------------------------------------------------------------------------*/
++#ifdef UART_TYPE_AXI_UART16550
++u8 uart_read_char(void){
++	u8 u;
++	XUartNs550_Initialize(&UartNs550, UART_DEVICE_ID);
++	XUartNs550_SetBaudRate(&UartNs550, UART_BAUDRATE);
++    while(!XUartNs550_Recv(&UartNs550, &u, 1)){
++    }
++	return u;
++}
++#endif /* UART_TYPE_AXI_UART16550 */
++/*----------------------------------------------------------------------------*/
++#if defined(UART_TYPE_ZYNQPS_UART) || defined(UART_TYPE_ZYNQUPS_UART)
++u8 uart_read_char(void){
++	u8 u;
++	XUartPs_Config *Config;
++	Config = XUartPs_LookupConfig(UART_DEVICE_ID);
++	XUartPs_CfgInitialize(&Uart_Ps, Config, Config->BaseAddress);
++	XUartPs_SetBaudRate(&Uart_Ps, UART_BAUDRATE);
++	while(!XUartPs_Recv(&Uart_Ps, &u, 1)){
++	}
++	return u;
++}
++#endif /* UART_TYPE_ZYNQPS_UART */
++/*----------------------------------------------------------------------------*/
++#ifdef UART_TYPE_NO_UART
++u8 uart_read_char(void){
++	return 0;
++}
++#endif /* UART_TYPE_NO_UART */
++/*----------------------------------------------------------------------------*/
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_uart.h b/lib/sw_apps/zynqmp_fsbl/src/te_uart.h
+new file mode 100644
+index 0000000000..f6dc11edf1
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_uart.h
+@@ -0,0 +1,40 @@
++/*
++-- Company: 		Trenz Electronic
++-- Engineer: 		Oleksandr Kiyenko / John Hartfiel
++ */
++#ifndef SRC_TE_UART_H_
++#define SRC_TE_UART_H_
++
++#include "te_iic_platform.h"
++
++u8 uart_read_char(void);
++
++/*----------------------------------------------------------------------------*/
++#ifdef UART_TYPE_AXI_UARTLITE
++#include "xil_printf.h"
++#include "xuartlite.h"
++#define p_printf(x)	xil_printf x
++XUartLite UartLite;
++#endif /* UART_TYPE_AXI_UARTLITE */
++/*----------------------------------------------------------------------------*/
++#ifdef UART_TYPE_AXI_UART16550
++#include "xil_printf.h"
++#include "xuartns550.h"
++#include "xuartns550_i.h"
++#define p_printf(x)	xil_printf x
++XUartNs550 UartNs550;
++#endif /* UART_TYPE_AXI_UART16550 */
++/*----------------------------------------------------------------------------*/
++#if defined(UART_TYPE_ZYNQPS_UART) || defined(UART_TYPE_ZYNQUPS_UART)
++#include "xil_printf.h"
++#include "xuartps.h"
++#define p_printf(x)	xil_printf x
++XUartPs Uart_Ps;
++#endif /* UART_TYPE_ZYNQPS_UART */
++/*----------------------------------------------------------------------------*/
++#ifdef UART_TYPE_NO_UART
++#define p_printf(x)
++#endif /* UART_TYPE_NO_UART */
++/*----------------------------------------------------------------------------*/
++
++#endif /* SRC_TE_UART_H_ */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.c b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.c
+new file mode 100644
+index 0000000000..875e717c2b
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.c
+@@ -0,0 +1,169 @@
++/******************************************************************************
++*
++* 
++*
++******************************************************************************/
++
++/*****************************************************************************/
++/**
++*
++* @file te_xfsbl_hooks.c
++
++******************************************************************************/
++/***************************** Include Files *********************************/
++#include "te_xfsbl_hooks.h"
++/************************** Constant Definitions *****************************/
++
++/**************************** Type Definitions *******************************/
++
++/***************** Macros (Inline Functions) Definitions *********************/
++
++/************************** Function Prototypes ******************************/
++
++/************************** Variable Definitions *****************************/
++u32 TE_XFsbl_HookBeforeBSDownload(void )
++{
++	u32 Status = XFSBL_SUCCESS;
++
++	/**
++	 * Add the code here
++	 */
++#if defined(ENABLE_TE_HOOKS_BD)
++	Status = TE_XFsbl_HookBeforeBSDownload_Custom();
++#endif  
++
++	return Status;
++}
++
++
++u32 TE_XFsbl_HookAfterBSDownload(void )
++{
++	u32 Status = XFSBL_SUCCESS;
++
++	/**
++	 * Add the code here
++	 */
++#if defined(ENABLE_TE_HOOKS_AD)
++	Status = TE_XFsbl_HookAfterBSDownload_Custom();
++#endif  
++
++	return Status;
++}
++
++u32 TE_XFsbl_HookBeforeHandoff(u32 EarlyHandoff)
++{
++	u32 Status = XFSBL_SUCCESS;
++
++	/**
++	 * Add the code here
++	 */
++#if defined(ENABLE_TE_HOOKS_BH)
++	Status = TE_XFsbl_HookBeforeHandoff_Custom(EarlyHandoff);
++#endif  
++
++	return Status;
++}
++
++/*****************************************************************************/
++/**
++ * This is a hook function where user can include the functionality to be run
++ * before FSBL fallback happens
++ *
++ * @param none
++ *
++ * @return error status based on implemented functionality (SUCCESS by default)
++ *
++  *****************************************************************************/
++
++u32 TE_XFsbl_HookBeforeFallback(void)
++{
++	u32 Status = XFSBL_SUCCESS;
++
++	/**
++	 * Add the code here
++	 */
++#if defined(ENABLE_TE_HOOKS_BF)
++	Status = TE_XFsbl_HookBeforeFallback_Custom();
++#endif  
++
++	return Status;
++}
++
++/*****************************************************************************/
++/**
++ * This function facilitates users to define different variants of psu_init()
++ * functions based on different configurations in Vivado. The default call to
++ * psu_init() can then be swapped with the alternate variant based on the
++ * requirement.
++ *
++ * @param none
++ *
++ * @return error status based on implemented functionality (SUCCESS by default)
++ *
++  *****************************************************************************/
++
++#if defined(ENABLE_TE_HOOKS_PSU)  
++# else 
++u32 TE_XFsbl_PSU_Default(void)
++{
++  //copy from Xilinx default PSU, xilinx default PSU from Xilinx xfsbl_hooks must be deactivated when TE modified variant is used
++    u32 Status;
++  #ifdef XFSBL_ENABLE_DDR_SR
++    u32 RegVal;
++  #endif
++    
++  #ifdef XFSBL_ENABLE_DDR_SR
++    /* Check if DDR is in self refresh mode */
++    RegVal = Xil_In32(XFSBL_DDR_STATUS_REGISTER_OFFSET) &
++      DDR_STATUS_FLAG_MASK;
++    if (RegVal) {
++      Status = (u32)psu_init_ddr_self_refresh();
++    } else {
++      Status = (u32)psu_init();
++    }
++  #else
++    Status = (u32)psu_init();
++  #endif
++  
++  	return Status;
++}
++#endif  
++
++
++u32 TE_XFsbl_HookPsuInit(void)
++{
++	u32 Status = XFSBL_SUCCESS;
++
++	/* Add the code here */
++#if defined(ENABLE_TE_HOOKS_PSU)
++	Status = TE_XFsbl_HookPsuInit_Custom();
++# else 
++   Status = TE_XFsbl_PSU_Default();
++#endif  
++
++	return Status;
++}
++/***for xsfbl_board.h***/
++/*****************************************************************************/
++/**
++ * This function does board specific initialization.
++ * If there isn't any board specific initialization required, it just returns.
++ *
++ * @param none
++ *
++ * @return
++ * 		- XFSBL_SUCCESS for successful configuration
++ * 		- errors as mentioned in xfsbl_error.h
++ *
++ *****************************************************************************/
++u32 TE_XFsbl_BoardInit(void)
++{
++	u32 Status = XFSBL_SUCCESS;
++  
++#if defined(ENABLE_TE_BOARD)
++	Status = TE_XFsbl_BoardInit_Custom();
++#endif  
++  
++
++	return Status;
++}
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.h b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.h
+new file mode 100644
+index 0000000000..a6dc317a0f
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks.h
+@@ -0,0 +1,61 @@
++/******************************************************************************
++*
++* 
++*
++******************************************************************************/
++
++/*****************************************************************************/
++/**
++*
++* @file te_xfsbl_hooks.h
++*
++*
++******************************************************************************/
++#ifndef TE_XFSBL_HOOKS_H
++#define TE_XFSBL_HOOKS_H
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++/***************************** Include Files *********************************/
++#include "xil_types.h"
++#include "xfsbl_hw.h"
++// rename and enable custom TE hooks
++#include "te_xfsbl_hooks_te0820.h"
++#define ENABLE_TE_HOOKS_PSU //TE_XFsbl_HookPsuInit
++#define ENABLE_TE_BOARD // TE_XFsbl_BoardInit
++// #define ENABLE_TE_HOOKS_BD //TE_XFsbl_HookBeforeBSDownload
++// #define ENABLE_TE_HOOKS_AD //TE_XFsbl_HookAfterBSDownload
++// #define ENABLE_TE_HOOKS_BH //TE_XFsbl_HookBeforeHandoff
++// #define ENABLE_TE_HOOKS_BF // TE_XFsbl_HookBeforeFallback
++
++/************************** Constant Definitions *****************************/
++
++/**************************** Type Definitions *******************************/
++
++/***************** Macros (Inline Functions) Definitions *********************/
++
++/************************** Function Prototypes ******************************/
++
++/************************** Variable Definitions *****************************/
++// for xsfbl_hooks.h/c
++u32 TE_XFsbl_HookBeforeBSDownload(void );
++
++u32 TE_XFsbl_HookAfterBSDownload(void );
++
++u32 TE_XFsbl_HookBeforeHandoff(u32 EarlyHandoff);
++
++u32 TE_XFsbl_HookBeforeFallback(void);
++
++u32 TE_XFsbl_HookPsuInit(void);
++
++// for xsfbl_board.h/c
++u32 TE_XFsbl_BoardInit(void);
++
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif  /* XFSBL_HOOKS_H */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.c b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.c
+new file mode 100644
+index 0000000000..6f049c9962
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.c
+@@ -0,0 +1,408 @@
++/******************************************************************************
++*
++* 
++*
++
++******************************************************************************/
++
++/*****************************************************************************/
++/**
++*
++* @file te_xfsbl_hooks.c
++
++******************************************************************************/
++/***************************** Include Files *********************************/
++//rename to correct board name
++#include "te_xfsbl_hooks_te0820.h"
++
++#include "psu_init.h"
++/************************** Constant Definitions *****************************/
++
++/**************************** Type Definitions *******************************/
++
++/***************** Macros (Inline Functions) Definitions *********************/
++
++/************************** Function Prototypes ******************************/
++
++/************************** Variable Definitions *****************************/
++u32 TE_XFsbl_HookBeforeBSDownload_Custom(void )
++{
++	u32 Status = XFSBL_SUCCESS;
++
++    xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++    xil_printf("TE0820 TE_XFsbl_HookBeforeBSDownload_Custom\r\n"); 
++	/* Add the code here */
++    xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++
++	return Status;
++}
++
++
++u32 TE_XFsbl_HookAfterBSDownload_Custom(void )
++{
++	u32 Status = XFSBL_SUCCESS;
++
++    xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++    xil_printf("TE0820 TE_XFsbl_HookAfterBSDownload_Custom\r\n"); 
++	/* Add the code here */
++    xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++
++    return Status;
++}
++
++u32 TE_XFsbl_HookBeforeHandoff_Custom(u32 EarlyHandoff)
++{
++	u32 Status = XFSBL_SUCCESS;
++
++    xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++    xil_printf("TE0820 TE_XFsbl_HookBeforeHandoff_Custom\r\n"); 
++	/* Add the code here */
++    xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++
++    return Status;
++}
++
++/*****************************************************************************/
++/**
++ * This is a hook function where user can include the functionality to be run
++ * before FSBL fallback happens
++ *
++ * @param none
++ *
++ * @return error status based on implemented functionality (SUCCESS by default)
++ *
++  *****************************************************************************/
++
++u32 TE_XFsbl_HookBeforeFallback_Custom(void)
++{
++	u32 Status = XFSBL_SUCCESS;
++
++
++  xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++  xil_printf("TE0820 TE_XFsbl_HookBeforeFallback_Custom\r\n"); 
++	/* Add the code here */
++  xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++
++	return Status;
++}
++
++/*****************************************************************************/
++/**
++ * This function facilitates users to define different variants of psu_init()
++ * functions based on different configurations in Vivado. The default call to
++ * psu_init() can then be swapped with the alternate variant based on the
++ * requirement.
++ *
++ * @param none
++ *
++ * @return error status based on implemented functionality (SUCCESS by default)
++ *
++  *****************************************************************************/
++#ifdef USE_TE_PSU_FOR_SI_INIT
++ u32 TE_XFsbl_TPSU_MODIFIED(void)
++{
++  // note Xilinx PSU must be disabled in tx_xfsbl_hooks.h
++  // used to configure SI on the module. Only needed on this stage if SI CLKs are used for PS
++  u32 Status;
++
++  u32 DDRRegVal = 0;
++  #ifdef XFSBL_ENABLE_DDR_SR
++    /* Check if DDR is in self refresh mode */
++    DDRRegVal = Xil_In32(XFSBL_DDR_STATUS_REGISTER_OFFSET) &
++      DDR_STATUS_FLAG_MASK;
++  #endif
++  //Status = (u32)psu_init(); --> replace with inner code from psu_init
++  // code from psu_init():  
++  int psu_status = 1;
++
++  psu_status &= psu_mio_init_data();
++  psu_status &=  psu_peripherals_pre_init_data();
++  psu_status &=   psu_pll_init_data();
++  psu_status &=   psu_clock_init_data();
++  psu_status &=  psu_ddr_init_data();
++  
++
++  // modified to use same code for DDR with and without self refresh mode, diff between  psu_init_ddr_self_refresh and psu_init
++  if (DDRRegVal) {
++    //do nothing
++  } else {
++    psu_status &=  psu_ddr_phybringup_data();  // not used on XFSBL_ENABLE_DDR_SR
++  }
++  
++  psu_status &=  psu_peripherals_init_data();
++  
++  if (psu_status == 0) {
++    Status= psu_status;
++    // exit on error
++    goto END;
++  }
++
++  
++  //add code to initialize SI on module for GTR periphery
++  xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++  xil_printf("TE0820 TE_XFsbl_HookPsuInit_Custom\r\n"); 
++  /* Add the code here */
++  // ------------------------------------------------------
++  // reset PCI and USB
++  	u32 dataVal = 0;
++
++    // USB reset  
++		/* Set MIO25 direction as output */
++    XFsbl_Out32(GPIO_DIRM_0, XFsbl_In32(GPIO_DIRM_0) | GPIO_MIO25_MASK);
++
++		/* Set MIO30 output enable */
++    XFsbl_Out32(GPIO_OEN_0, XFsbl_In32(GPIO_OEN_0) | GPIO_MIO25_MASK);  
++    
++    /* Set MIO30 to LOW */
++		dataVal = XFsbl_In32(GPIO_DATA_0) & ~(GPIO_MIO25_MASK);
++		XFsbl_Out32(GPIO_DATA_0, dataVal);
++    
++    // eth reset
++    /* Set MIO24 direction as output */
++    XFsbl_Out32(GPIO_DIRM_0, XFsbl_In32(GPIO_DIRM_0) | GPIO_MIO24_MASK);
++
++    /* Set MIO24 output enable */
++    XFsbl_Out32(GPIO_OEN_0, XFsbl_In32(GPIO_OEN_0) | GPIO_MIO24_MASK);
++
++
++    /* Set MIO24 to LOW */
++    dataVal = XFsbl_In32(GPIO_DATA_0) & ~(GPIO_MIO24_MASK);
++    XFsbl_Out32(GPIO_DATA_0, dataVal);
++
++  // ------------------------------------------------------
++  Status = iic_init();                      // Configure I2C Bus 0 driver instance
++  if (Status != XFSBL_SUCCESS) {
++     xil_printf("Error:I2C Init\r\n");
++     goto END;
++  }
++  xil_printf("Configure SI5338\r\n");
++  Status = si5338_init(0x70);                      // Configure clocks
++  if (Status != XFSBL_SUCCESS) {
++     xil_printf("Error: Configure SI5338 CLK\r\n");
++     goto END;
++  }
++  // ------------------------------------------------------
++  // release ETH and USB reset
++  /* Set MIO25 to HIGH */
++  dataVal = XFsbl_In32(GPIO_DATA_0) | GPIO_MIO25_MASK;
++  XFsbl_Out32(GPIO_DATA_0, dataVal);
++  xil_printf("USB Reset Complete \r\n");
++  
++
++  /* Set MIO24 to HIGH */
++  dataVal = XFsbl_In32(GPIO_DATA_0) | GPIO_MIO24_MASK;
++  XFsbl_Out32(GPIO_DATA_0, dataVal);
++  xil_printf("ETH Reset Complete\r\n");
++
++  // ------------------------------------------------------
++  xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++  /* wait after initialization*/
++  (void)usleep(DELAY_AFTER_US);
++  
++  
++  //note: SDK with default FSBL will not generate init_serdes(), when no serdes are available
++#if defined(SERDES_PLL_REF_SEL0_PLLREFSEL0_DEFVAL) || defined(SERDES_PLL_REF_SEL1_PLLREFSEL1_DEFVAL) || defined(SERDES_PLL_REF_SEL2_PLLREFSEL2_DEFVAL)  ||  defined(SERDES_PLL_REF_SEL3_PLLREFSEL3_DEFVAL)
++  //psu_status &=  init_serdes();  --> replace with inner code
++    // code from init_serdes():
++    psu_status &=  psu_resetin_init_data();
++    psu_status &= serdes_fixcal_code();
++    //psu_status &= serdes_enb_coarse_saturation();  --> replace with inner code
++    // code from serdes_enb_coarse_saturation():  
++      /*Enable PLL Coarse Code saturation Logic*/
++      Xil_Out32(0xFD402094, 0x00000010);
++      Xil_Out32(0xFD406094, 0x00000010);
++      Xil_Out32(0xFD40A094, 0x00000010);
++      Xil_Out32(0xFD40E094, 0x00000010);
++    // finished code from serdes_enb_coarse_saturation()
++    psu_status &=  psu_serdes_init_data();
++    psu_status &=  psu_resetout_init_data();
++  // finished code from init_serdes()
++#endif
++  //init_peripheral();  --> replace with inner code
++    // code from init_peripheral():
++    /*SMMU_REG Interrrupt Enable: Followig register need to be written all the time to properly catch SMMU messages.*/
++    //PSU_Mask_Write(0xFD5F0018, 0x8000001FU, 0x8000001FU);  --> replace with inner code
++      // code from serdes_enb_coarse_saturation():  
++      unsigned long RegVal = 0x0;
++
++      RegVal = Xil_In32(0xFD5F0018);
++      RegVal &= ~(0x8000001FU);
++      RegVal |= (0x8000001FU & 0x8000001FU);
++      Xil_Out32(0xFD5F0018, RegVal);
++      // finished code from serdes_enb_coarse_saturation()
++  // finished code from init_peripheral():
++
++  psu_status &=  psu_peripherals_powerdwn_data();
++  psu_status &=    psu_afi_config();
++  psu_ddr_qos_init_data();
++
++// code from psu_init():
++  if (psu_status == 0) {
++    Status= psu_status;
++    // exit on error
++    goto END;
++  }
++  
++  END:
++  
++	return Status;
++ 
++}  
++#else
++u32 TE_XFsbl_XPSU_Default(void)
++{
++  //copy from Xilinx default PSU, xilinx default PSU from Xilinx xfsbl_hooks must be deactivated when TE modified variant is used
++    u32 Status;
++  #ifdef XFSBL_ENABLE_DDR_SR
++    u32 RegVal;
++  #endif
++    
++  #ifdef XFSBL_ENABLE_DDR_SR
++    /* Check if DDR is in self refresh mode */
++    RegVal = Xil_In32(XFSBL_DDR_STATUS_REGISTER_OFFSET) &
++      DDR_STATUS_FLAG_MASK;
++    if (RegVal) {
++      Status = (u32)psu_init_ddr_self_refresh();
++    } else {
++      Status = (u32)psu_init();
++    }
++  #else
++    Status = (u32)psu_init();
++  #endif
++  
++  	return Status;
++}
++#endif
++  
++u32 TE_XFsbl_HookPsuInit_Custom(void)
++{
++	u32 Status = XFSBL_SUCCESS;
++  
++  #ifdef USE_TE_PSU_FOR_SI_INIT
++    Status = TE_XFsbl_TPSU_MODIFIED();
++  #else
++    Status = TE_XFsbl_XPSU_Default();
++  #endif
++
++	return Status;
++}
++
++
++/*****************************************************************************/
++/**
++  * for xsfbl_board.h
++  *****************************************************************************/
++
++/*****************************************************************************/
++/**
++ * This function does board specific initialization.
++ * If there isn't any board specific initialization required, it just returns.
++ *
++ * @param none
++ *
++ * @return
++ * 		- XFSBL_SUCCESS for successful configuration
++ * 		- errors as mentioned in xfsbl_error.h
++ *
++ *****************************************************************************/
++ 
++ 
++u32 TE_XFsbl_BoardInit_Custom(void)
++{
++	u32 Status = XFSBL_SUCCESS;
++  u32 RegVal = 0;
++  u32 temp = 0;
++  xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++  xil_printf("TE0820 TE_XFsbl_BoardInit_Custom\r\n");
++  #ifdef USE_TE_PSU_FOR_SI_INIT
++
++  #else
++
++    // USB reset  
++		/* Set MIO25 direction as output */
++    XFsbl_Out32(GPIO_DIRM_0, XFsbl_In32(GPIO_DIRM_0) | GPIO_MIO25_MASK);
++
++		/* Set MIO30 output enable */
++    XFsbl_Out32(GPIO_OEN_0, XFsbl_In32(GPIO_OEN_0) | GPIO_MIO25_MASK);  
++    
++    /* Set MIO30 to LOW */
++		RegVal = XFsbl_In32(GPIO_DATA_0) & ~(GPIO_MIO25_MASK);
++		XFsbl_Out32(GPIO_DATA_0, RegVal);
++    
++    // eth reset
++    /* Set MIO24 direction as output */
++    XFsbl_Out32(GPIO_DIRM_0, XFsbl_In32(GPIO_DIRM_0) | GPIO_MIO24_MASK);
++
++    /* Set MIO24 output enable */
++    XFsbl_Out32(GPIO_OEN_0, XFsbl_In32(GPIO_OEN_0) | GPIO_MIO24_MASK);
++
++
++    /* Set MIO24 to LOW */
++    RegVal = XFsbl_In32(GPIO_DATA_0) & ~(GPIO_MIO24_MASK);
++    XFsbl_Out32(GPIO_DATA_0, RegVal);
++    //hold low for some time
++    (void)usleep(DELAY_32_US);
++    // release ETH and USB reset
++    /* Set MIO25 to HIGH */
++    RegVal = XFsbl_In32(GPIO_DATA_0) | GPIO_MIO25_MASK;
++    XFsbl_Out32(GPIO_DATA_0, RegVal);
++    xil_printf("USB Reset Complete \r\n");
++    
++
++    /* Set MIO24 to HIGH */
++    RegVal = XFsbl_In32(GPIO_DATA_0) | GPIO_MIO24_MASK;
++    XFsbl_Out32(GPIO_DATA_0, RegVal);
++    xil_printf("ETH Reset Complete\r\n");
++    
++  #endif
++  
++  
++	/* Add the code here */
++  //check USB,PCIe Reset
++  RegVal = XFsbl_In32(GPIO_DATA_0) ;
++  temp = ((RegVal) & (GPIO_MIO25_MASK))>>25;
++  if (temp!=0x1) {
++    xil_printf("USB is hold into reset. (GPIO_DATA_0, Val:%x)\r\n", RegVal);
++  }
++  temp = ((RegVal) & (GPIO_MIO24_MASK))>>24;
++  if (temp!=0x1) {
++    xil_printf("ETH is hold into reset. (GPIO_DATA_0, Val:%x)\r\n", RegVal);
++  }  
++  
++  
++  //check serdes(gtr)
++#if defined(SERDES_PLL_REF_SEL0_PLLREFSEL0_DEFVAL)
++  RegVal = Xil_In32(0xFD4023E4);
++  temp = ((RegVal) & (0x0030))>>4;
++  if(temp!=0x3) {
++    xil_printf("GTR Lane0 LOCK Status failed. (Reg:0xFD4023E4,Val:0x%x)\r\n", RegVal);
++  }
++#endif
++#if defined(SERDES_PLL_REF_SEL1_PLLREFSEL1_DEFVAL)
++  RegVal = Xil_In32(0xFD4063E4);
++  temp = ((RegVal) & (0x0030))>>4;
++  if(temp!=0x3) {
++    xil_printf("GTR Lane1 LOCK Status failed. (Reg:0xFD4063E4,Val:0x%x)\r\n", RegVal);
++  }
++#endif
++#if defined(SERDES_PLL_REF_SEL2_PLLREFSEL2_DEFVAL)
++  RegVal = Xil_In32(0xFD40A3E4);
++  temp = ((RegVal) & (0x0030))>>4;
++  if(temp!=0x3) {
++    xil_printf("GTR Lane2 LOCK Status failed. (Reg:0xFD40A3E4,Val:0x%x)\r\n", RegVal);
++  }
++#endif
++#if defined(SERDES_PLL_REF_SEL3_PLLREFSEL3_DEFVAL)
++  RegVal = Xil_In32(0xFD40E3E4);
++  temp = ((RegVal) & (0x0030))>>4;
++  if(temp!=0x3) {
++    xil_printf("GTR Lane3 LOCK Status failed. (Reg:0xFD40E3E4,Val:0x%x)\r\n", RegVal);
++  }
++#endif
++  
++  END:
++  xil_printf("\r\n--------------------------------------------------------------------------------\r\n");
++
++  
++	return Status;
++}
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.h b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.h
+new file mode 100644
+index 0000000000..5eef4eb825
+--- /dev/null
++++ b/lib/sw_apps/zynqmp_fsbl/src/te_xfsbl_hooks_te0820.h
+@@ -0,0 +1,74 @@
++/******************************************************************************
++*
++* 
++*
++
++******************************************************************************/
++
++/*****************************************************************************/
++/**
++*
++* @file te_xfsbl_hooks_custom.h
++*
++*
++******************************************************************************/
++//rename to correct board name
++#ifndef TE_XFSBL_HOOKS_TE0820_H
++#define TE_XFSBL_HOOKS_TE0820_H
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++/***************************** Include Files *********************************/
++#include "xil_types.h"
++#include "xfsbl_hw.h"
++
++#include "te_iic_platform.h"
++#include "te_si5338.h"
++#include "xparameters.h"
++/************************** Constant Definitions *****************************/
++
++#define USE_TE_PSU_FOR_SI_INIT //enable TE PSU to write SI on the correct place in the FSBL (Xilinx default PSU is deactivated)
++
++
++
++#define GPIO_DATA_0    ( ( GPIO_BASEADDR ) + 0X00000040U )
++#define GPIO_DIRM_0    ( ( GPIO_BASEADDR ) + 0X00000204U )
++#define GPIO_OEN_0     ( ( GPIO_BASEADDR ) + 0X00000208U )
++
++#define GPIO_MIO24_MASK	0x01000000U
++#define GPIO_MIO25_MASK	0x02000000U
++#define ICM_CFG_VAL_PCIE	0X1U
++#define DELAY_1_US			0x1U
++#define DELAY_5_US			0x5U
++#define DELAY_32_US			0x20U
++#define DELAY_500_US	  0x500U 
++#define DELAY_1000_US	  0x1000U 
++#define DELAY_AFTER_US	0x2000U 
++/**************************** Type Definitions *******************************/
++/***************** Macros (Inline Functions) Definitions *********************/
++
++/************************** Function Prototypes ******************************/
++
++/************************** Variable Definitions *****************************/
++// for xsfbl_hooks.h
++u32 TE_XFsbl_HookBeforeBSDownload_Custom(void );
++
++u32 TE_XFsbl_HookAfterBSDownload_Custom(void );
++
++u32 TE_XFsbl_HookBeforeHandoff_Custom(u32 EarlyHandoff);
++
++u32 TE_XFsbl_HookBeforeFallback_Custom(void);
++
++u32 TE_XFsbl_HookPsuInit_Custom(void);
++
++// for xsfbl_board.h
++u32 TE_XFsbl_BoardInit_Custom(void);
++
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif  /* XFSBL_HOOKS_H */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c
+index 910139ccac..2506c8b110 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c
+@@ -779,6 +779,10 @@ static void XFsbl_PcieReset(void)
+ u32 XFsbl_BoardInit(void)
+ {
+ 	u32 Status;
++  
++/* TE Mod:*/  
++  Status = TE_XFsbl_BoardInit();
++/* TE Mod: finished*/               
+ #if defined(XPS_BOARD_ZCU102) || defined(XPS_BOARD_ZCU106)		\
+ 		|| defined(XPS_BOARD_ZCU104) || defined(XPS_BOARD_ZCU111)
+ 	/* Program I2C to configure GT lanes */
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h
+index 2cc6175fa8..41e4ec8ffd 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h
+@@ -57,6 +57,10 @@ extern "C" {
+ 
+ /***************************** Include Files *********************************/
+ #include "xfsbl_hw.h"
++/* TE Mod:*/
++#include "te_xfsbl_hooks.h"
++/* TE Mod: finished*/
++
+ #if defined(XPS_BOARD_ZCU102) || defined(XPS_BOARD_ZCU106)		\
+ 		|| defined(XPS_BOARD_ZCU104) || defined(XPS_BOARD_ZCU111)
+ #include "xiicps.h"
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.c b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.c
+index 503a585597..de166f8bd5 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.c
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.c
+@@ -66,8 +66,9 @@ u32 XFsbl_HookBeforeBSDownload(void )
+ 	/**
+ 	 * Add the code here
+ 	 */
+-
+-
++/* TE Mod:*/
++  Status = TE_XFsbl_HookBeforeBSDownload();
++/* TE Mod: finished*/                 
+ 	return Status;
+ }
+ 
+@@ -79,7 +80,9 @@ u32 XFsbl_HookAfterBSDownload(void )
+ 	/**
+ 	 * Add the code here
+ 	 */
+-
++/* TE Mod:*/
++  Status = TE_XFsbl_HookAfterBSDownload();
++/* TE Mod: finished*/            
+ 	return Status;
+ }
+ #endif
+@@ -91,7 +94,9 @@ u32 XFsbl_HookBeforeHandoff(u32 EarlyHandoff)
+ 	/**
+ 	 * Add the code here
+ 	 */
+-
++/* TE Mod:*/
++  Status = TE_XFsbl_HookBeforeHandoff(EarlyHandoff); 
++/* TE Mod: finished*/                
+ 	return Status;
+ }
+ 
+@@ -113,7 +118,9 @@ u32 XFsbl_HookBeforeFallback(void)
+ 	/**
+ 	 * Add the code here
+ 	 */
+-
++/* TE Mod:*/
++  Status = TE_XFsbl_HookBeforeFallback(); 
++/* TE Mod: finished*/                   
+ 	return Status;
+ }
+ 
+@@ -138,20 +145,27 @@ u32 XFsbl_HookPsuInit(void)
+ #endif
+ 
+ 	/* Add the code here */
+-
+-#ifdef XFSBL_ENABLE_DDR_SR
+-	/* Check if DDR is in self refresh mode */
+-	RegVal = Xil_In32(XFSBL_DDR_STATUS_REGISTER_OFFSET) &
+-		DDR_STATUS_FLAG_MASK;
+-	if (RegVal) {
+-		Status = (u32)psu_init_ddr_self_refresh();
+-	} else {
+-		Status = (u32)psu_init();
+-	}
+-#else
+-	Status = (u32)psu_init();
+-#endif
+-
++/* TE Mod:*/
++  Status = TE_XFsbl_HookPsuInit(); 
++  if (Status != XFSBL_SUCCESS) {
++     xil_printf("Error: TE_XFsbl_HookPsuInit failed\r\n");
++     goto END;
++  }
++
++// #ifdef XFSBL_ENABLE_DDR_SR
++	// /* Check if DDR is in self refresh mode */
++	// RegVal = Xil_In32(XFSBL_DDR_STATUS_REGISTER_OFFSET) &
++		// DDR_STATUS_FLAG_MASK;
++	// if (RegVal) {
++		// Status = (u32)psu_init_ddr_self_refresh();
++	// } else {
++		// Status = (u32)psu_init();
++	// }
++// #else
++	// Status = (u32)psu_init();
++// #endif
++  END:
++/* TE Mod: finished*/
+ 	if (XFSBL_SUCCESS != Status) {
+ 			XFsbl_Printf(DEBUG_GENERAL,"XFSBL_PSU_INIT_FAILED\n\r");
+ 			/**
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.h b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.h
+index b508d0e0cb..6cdc893ae9 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.h
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_hooks.h
+@@ -53,7 +53,9 @@ extern "C" {
+ /***************************** Include Files *********************************/
+ #include "xil_types.h"
+ #include "xfsbl_hw.h"
+-
++/* TE Mod:*/
++#include "te_xfsbl_hooks.h"
++/* TE Mod: finished*/
+ /************************** Constant Definitions *****************************/
+ 
+ /**************************** Type Definitions *******************************/
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_main.c b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_main.c
+index 4dc1eaab29..799fff111c 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_main.c
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_main.c
+@@ -358,12 +358,23 @@ void XFsbl_PrintFsblBanner(void )
+ 	 */
+ #if !defined(XFSBL_PERF) || defined(FSBL_DEBUG) || defined(FSBL_DEBUG_INFO) \
+ 			|| defined(FSBL_DEBUG_DETAILED)
++  // TE Mod : 
+ 	XFsbl_Printf(DEBUG_PRINT_ALWAYS,
+-                 "Xilinx Zynq MP First Stage Boot Loader \n\r");
++                 "\r\n--------------------------------------------------------------------------------\r\n");  
++	XFsbl_Printf(DEBUG_PRINT_ALWAYS,
++                 "Xilinx Zynq MP First Stage Boot Loader (TE modified) \n\r");
+ 	XFsbl_Printf(DEBUG_PRINT_ALWAYS,
+                  "Release %d.%d   %s  -  %s\r\n",
+                  SDK_RELEASE_YEAR, SDK_RELEASE_QUARTER,__DATE__,__TIME__);
+-
++                 
++	/* Build Device name and print it */
++  char DevName[20U];
++	(void)XFsbl_Strcpy(DevName, "XCZU");
++	(void)XFsbl_Strcat(DevName, XFsbl_GetSiliconIdName());
++	(void)XFsbl_Strcat(DevName, XFsbl_GetProcEng());
++	XFsbl_Printf(DEBUG_PRINT_ALWAYS, "Device Name: %s\n\r", DevName);  
++                 
++// TE Mod finished
+ 	if(FsblInstance.ResetReason == XFSBL_PS_ONLY_RESET) {
+ 		XFsbl_Printf(DEBUG_GENERAL,"Reset Mode	:	PS Only Reset\r\n");
+ 	} else if (XFSBL_MASTER_ONLY_RESET == FsblInstance.ResetReason) {

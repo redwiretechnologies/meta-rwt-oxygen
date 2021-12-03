@@ -1,0 +1,121 @@
+From 2d6ff7c226913eb23611bf4155e6b66359397f3d Mon Sep 17 00:00:00 2001
+From: Siva Durga Prasad Paladugu <siva.durga.paladugu@xilinx.com>
+Date: Fri, 26 Oct 2018 17:47:55 +0530
+Subject: [PATCH] arm64: zynqmp: Fix logic in CG/EG/EV detection
+
+The VCU disable bit(8) in IP disable register of efuse
+is valid only if PL powered up and hence PL powerup status
+has to be considered while determining the CG part also.
+This patch considers the PL powerup status and ignores the VCU
+disable bit if PL not powered up.
+This fixes the issue of "unknown" id for CG parts if PL not powered up
+and VCU bit(8) is not set.
+
+Signed-off-by: Siva Durga Prasad Paladugu <siva.durga.paladugu@xilinx.com>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+---
+ board/xilinx/zynqmp/zynqmp.c | 48 +++++++++++++++++++++++++++---------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
+
+diff --git a/board/xilinx/zynqmp/zynqmp.c b/board/xilinx/zynqmp/zynqmp.c
+index 96c6b8425e..9cc479f585 100644
+--- a/board/xilinx/zynqmp/zynqmp.c
++++ b/board/xilinx/zynqmp/zynqmp.c
+@@ -73,6 +73,7 @@ static const struct {
+ 		.id = 0x20,
+ 		.ver = 0x12c,
+ 		.name = "5cg",
++		.evexists = 1,
+ 	},
+ 	{
+ 		.id = 0x21,
+@@ -89,6 +90,7 @@ static const struct {
+ 		.id = 0x21,
+ 		.ver = 0x12c,
+ 		.name = "4cg",
++		.evexists = 1,
+ 	},
+ 	{
+ 		.id = 0x30,
+@@ -105,6 +107,7 @@ static const struct {
+ 		.id = 0x30,
+ 		.ver = 0x12c,
+ 		.name = "7cg",
++		.evexists = 1,
+ 	},
+ 	{
+ 		.id = 0x38,
+@@ -235,14 +238,18 @@ int chip_id(unsigned char id)
+ 
+ #define ZYNQMP_VERSION_SIZE		9
+ #define ZYNQMP_PL_STATUS_BIT		9
++#define ZYNQMP_IPDIS_VCU_BIT		8
+ #define ZYNQMP_PL_STATUS_MASK		BIT(ZYNQMP_PL_STATUS_BIT)
+ #define ZYNQMP_CSU_VERSION_MASK		~(ZYNQMP_PL_STATUS_MASK)
++#define ZYNQMP_CSU_VCUDIS_VER_MASK	ZYNQMP_CSU_VERSION_MASK & \
++					~BIT(ZYNQMP_IPDIS_VCU_BIT)
++#define MAX_VARIANTS_EV			3
+ 
+ #if defined(CONFIG_FPGA) && defined(CONFIG_FPGA_ZYNQMPPL) && \
+ 	!defined(CONFIG_SPL_BUILD)
+ static char *zynqmp_get_silicon_idcode_name(void)
+ {
+-	u32 i, id, ver;
++	u32 i, id, ver, j;
+ 	char *buf;
+ 	static char name[ZYNQMP_VERSION_SIZE];
+ 
+@@ -250,24 +257,43 @@ static char *zynqmp_get_silicon_idcode_name(void)
+ 	ver = chip_id(IDCODE2);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(zynqmp_devices); i++) {
+-		if ((zynqmp_devices[i].id == id) &&
+-		    (zynqmp_devices[i].ver == (ver &
+-		    ZYNQMP_CSU_VERSION_MASK))) {
+-			strncat(name, "zu", 2);
+-			strncat(name, zynqmp_devices[i].name,
+-				ZYNQMP_VERSION_SIZE - 3);
+-			break;
++		if (zynqmp_devices[i].id == id) {
++			if (zynqmp_devices[i].evexists &&
++			    !(ver & ZYNQMP_PL_STATUS_MASK))
++				break;
++			if (zynqmp_devices[i].ver == (ver &
++			    ZYNQMP_CSU_VERSION_MASK))
++				break;
+ 		}
+ 	}
+ 
+ 	if (i >= ARRAY_SIZE(zynqmp_devices))
+ 		return "unknown";
+ 
+-	if (!zynqmp_devices[i].evexists)
++	strncat(name, "zu", 2);
++	if (!zynqmp_devices[i].evexists ||
++	    (ver & ZYNQMP_PL_STATUS_MASK)) {
++		strncat(name, zynqmp_devices[i].name,
++			ZYNQMP_VERSION_SIZE - 3);
+ 		return name;
++	}
+ 
+-	if (ver & ZYNQMP_PL_STATUS_MASK)
+-		return name;
++	/*
++	 * Here we are means, PL not powered up and ev variant
++	 * exists. So, we need to ignore VCU disable bit(8) in
++	 * version and findout if its CG or EG/EV variant.
++	 */
++	for (j = 0; j < MAX_VARIANTS_EV; j++, i++) {
++		if ((zynqmp_devices[i].ver & ~BIT(ZYNQMP_IPDIS_VCU_BIT)) ==
++		    (ver & ZYNQMP_CSU_VCUDIS_VER_MASK)) {
++			strncat(name, zynqmp_devices[i].name,
++				ZYNQMP_VERSION_SIZE - 3);
++			break;
++		}
++	}
++
++	if (j >= MAX_VARIANTS_EV)
++		return "unknown";
+ 
+ 	if (strstr(name, "eg") || strstr(name, "ev")) {
+ 		buf = strstr(name, "e");

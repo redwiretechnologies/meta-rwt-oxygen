@@ -1,0 +1,112 @@
+From f870effb64466cb36c85f8c3d74921549181cd9b Mon Sep 17 00:00:00 2001
+From: bellma <bellma@nowhere>
+Date: Wed, 15 Jan 2020 21:41:33 -0500
+Subject: [PATCH] oxygen Rev3 additions
+
+---
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c | 47 ++++++++++++++++-------
+ lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h |  5 +++
+ 2 files changed, 38 insertions(+), 14 deletions(-)
+
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c
+index 84b6cdf85..a8377e6f6 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c
+@@ -59,7 +59,9 @@
+ #include "xparameters.h"
+ #include "si5338.h"
+ 
+-void XFsbl_TEReset(void)
++
++static void
++XFsbl_TEReset(void)
+ {
+ 
+     u32 RegVal = 0;
+@@ -71,22 +73,10 @@ void XFsbl_TEReset(void)
+     /* Set MIO24 output enable */
+     XFsbl_Out32(GPIO_OEN_0, GPIO_MIO24_MASK);
+ 
+-    /* Set MIO24 to HIGH */
+-    RegVal = XFsbl_In32(GPIO_DATA_0) | GPIO_MIO24_MASK;
+-    XFsbl_Out32(GPIO_DATA_0, RegVal);
+-
+-    (void)usleep(DELAY_1_US);
+-
+-    /* Set MIO24 to LOW */
++    /* Put Ethernet in reset. */
+     RegVal = XFsbl_In32(GPIO_DATA_0) & ~(GPIO_MIO24_MASK);
+     XFsbl_Out32(GPIO_DATA_0, RegVal);
+ 
+-    (void)usleep(DELAY_5_US);
+-
+-    /* Set MIO24 to HIGH */
+-    RegVal = XFsbl_In32(GPIO_DATA_0) | GPIO_MIO24_MASK;
+-    XFsbl_Out32(GPIO_DATA_0, RegVal);
+-
+     //OTG RSTn
+     /* Set MIO25 direction as output */
+     XFsbl_Out32(GPIO_DIRM_0, GPIO_MIO25_MASK);
+@@ -112,6 +102,35 @@ void XFsbl_TEReset(void)
+ 
+     // USB Test USB2 phy suspend disable
+     // XFsbl_Out32(( ( XPAR_PSU_USB_0_BASEADDR ) + 0X0000C200U ), 0X2417U);
++
++
++    /* PCIe Reset
++
++       Because SI5338 chip wasn't ready when psu_init() was called, the PCIe
++       controller needs to be reset. I'm also reseting the PCIe external
++       reset line for good measure.
++
++       See for reference:
++       https://forums.xilinx.com/t5/Embedded-Linux/Zynq-UltraScale-PCIe-Root-Port-Lessons-Learned/td-p/766426
++     */
++
++    /* Set MIO33 to LOW */
++    RegVal = XFsbl_In32(GPIO_DATA_1) & ~(GPIO_MIO33_MASK);
++    XFsbl_Out32(GPIO_DATA_1, RegVal);
++
++    RegVal = XFsbl_In32(0xFD1A0100);
++    XFsbl_Out32(0xFD1A0100, RegVal | 0x00020000);
++    usleep(1000);
++
++    // Run PCIe controller
++    RegVal = XFsbl_In32(0xFD1A0100);
++    XFsbl_Out32(0xFD1A0100, RegVal & 0xFFFDFFFF);
++    usleep(1000);
++
++    /* Set MIO33 to HIGH */
++    RegVal = XFsbl_In32(GPIO_DATA_1) | GPIO_MIO33_MASK;
++    XFsbl_Out32(GPIO_DATA_1, RegVal);
++
+ }
+ 
+ 
+diff --git a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h
+index 5927c8960..bf46ebc57 100644
+--- a/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h
++++ b/lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h
+@@ -65,14 +65,19 @@ extern "C" {
+ #include "xfsbl_hw.h"
+ 
+ #define GPIO_DATA_0    ( ( GPIO_BASEADDR ) + 0X00000040U )
++#define GPIO_DATA_1    ( ( GPIO_BASEADDR ) + 0X00000044U )
+ #define GPIO_DIRM_0    ( ( GPIO_BASEADDR ) + 0X00000204U )
+ #define GPIO_OEN_0     ( ( GPIO_BASEADDR ) + 0X00000208U )
+ 
+ #define GPIO_MIO24_MASK	0x01000000U
+ #define GPIO_MIO25_MASK	0x02000000U
++#define GPIO_MIO33_MASK	0x00000080U
++
+ #define DELAY_1_US			0x1U
+ #define DELAY_5_US			0x5U
+ 
++
++
+ u32 XFsbl_BoardInit(void);
+ 
+ #ifdef __cplusplus
+-- 
+2.17.1
+

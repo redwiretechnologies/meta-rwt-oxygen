@@ -1,0 +1,92 @@
+This README file contains information on the contents of the
+meta-oxygen layer.
+
+Please see the corresponding sections below for details.
+
+
+Dependencies
+============
+
+This layer depends on:
+
+  URI = git://git.yoctoproject.org/poky/
+  layers = meta meta-poky
+  branch = zeus
+
+  URI = git://github.com/openembedded/meta-openembedded
+  layers = meta-oe meta-python meta-networking meta-filesystems
+  branch = zeus
+
+  URI = git://github.com/meta-qt5/meta-qt5
+  layers = meta-qt5
+  branch = zeus
+
+  URI = git://github.com/balister/meta-sdr
+  layers = meta-sdr
+  branch = zeus
+
+  URI = git://github.com/Xilinx/meta-xilinx/
+  layers = meta-xilinx-bsp meta-xilinx-contrib
+  branch = rel-v2019.2
+
+  URI = git://github.com/Xilinx/meta-xilinx-tools/
+  layers = meta-xilinx-tools
+  branch = rel-v2019.2
+
+  URI = git://github.com/Xilinx/meta-xilinx-tools/
+  layers = meta-xilinx-tools
+  branch = rel-v2019.2
+
+
+
+Patches
+=======
+
+Please submit any patches against the meta-oxygen layer to the
+xxxx mailing list (xxxx@zzzz.org) and cc: the maintainer:
+
+Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
+
+
+Table of Contents
+=================
+
+  I. Adding the meta-oxygen layer to your build
+ II. Misc
+
+
+I. Adding the meta-oxygen layer to your build
+=================================================
+
+--- replace with specific instructions for the meta-oxygen layer ---
+
+In order to use this layer, you need to make the build system aware of
+it.
+
+Assuming the meta-oxygen layer exists at the top-level of your
+yocto build tree, you can add it to the build system by adding the
+location of the meta-oxygen layer to bblayers.conf, along with any
+other layers needed. e.g.:
+
+  BBLAYERS ?= " \
+    /path/to/yocto/poky/meta \
+    /path/to/yocto/poky/meta-poky \
+    /path/to/yocto/meta-openembedded/meta-oe \
+    /path/to/yocto/meta-openembedded/meta-python \
+    /path/to/yocto/meta-openembedded/meta-networking \
+    /path/to/yocto/meta-openembedded/meta-filesystems \
+    /path/to/yocto/meta-xilinx/meta-xilinx-bsp \
+    /path/to/yocto/meta-xilinx/meta-xilinx-contrib \
+    /path/to/yocto/meta-xilinx-tools \
+    /path/to/yocto/meta-qt5 \
+    /path/to/yocto/meta-sdr \
+    /path/to/yocto/meta-rwt-common \
+    /path/to/yocto/meta-rwt-oxygen \
+    "
+
+
+
+II. Misc
+========
+
+--- replace with specific information about the meta-oxygen layer ---

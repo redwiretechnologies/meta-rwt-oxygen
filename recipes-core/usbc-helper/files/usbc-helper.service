@@ -1,0 +1,11 @@
+[Unit]
+Description=A kludgy tool to monitor and switch USB modes on Oxygen.
+Requires=local-fs.target
+After=syslog.target
+
+[Service]
+Type=simple
+ExecStart=@BINDIR@/usbc_helper
+
+[Install]
+WantedBy=multi-user.target
