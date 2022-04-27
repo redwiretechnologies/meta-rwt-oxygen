@@ -75,7 +75,6 @@
     fragment@2 {
         target = <&i2c1>;
         __overlay__ {
-           #include "oxygenbt-personality-i2c.dtsi"
            #include "oxygen-transceiver-i2c.dtsi"
         };
     };

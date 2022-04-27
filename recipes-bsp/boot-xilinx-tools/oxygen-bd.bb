@@ -41,6 +41,7 @@ SRC_URI = " \
 
 MAIN_HDF = "main.xsa"
 
+COMPATIBLE_HOST_xilinx-standalone = "${HOST_SYS}"
 PACKAGES = "${PN}-platform-init ${PN}-bitstream"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 FILES_${PN}-bitstream += "/boot/*"

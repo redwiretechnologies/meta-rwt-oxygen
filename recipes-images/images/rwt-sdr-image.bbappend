@@ -9,4 +9,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     rwt-examples \
     python3-setuptools \
     python3-pyadi-iio \
+    python3-pybind11 \
+    gr-ieee80211 \
+    gr-foo \
 "
