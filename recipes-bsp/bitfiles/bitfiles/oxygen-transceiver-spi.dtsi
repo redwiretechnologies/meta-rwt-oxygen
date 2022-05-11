@@ -28,7 +28,7 @@ adc0_ad9361: ad9361-phy@0 {
     adi,pp-rx-swap-enable;
     adi,rx-frame-pulse-mode-enable;
     adi,lvds-mode-enable;
-    adi,lvds-bias-mV = <150>;
+    adi,lvds-bias-mV = <400>;
     adi,lvds-rx-onchip-termination-enable;
     adi,rx-data-delay = <4>;
     adi,tx-fb-clock-delay = <7>;
