@@ -1,0 +1,22 @@
+From 3f815a288437cdd0b57007af944603e58020e71d Mon Sep 17 00:00:00 2001
+From: OpenEmbedded <tflynn@redwiretechnology.com>
+Date: Fri, 13 May 2022 08:00:15 -0400
+Subject: [PATCH]  allow for larger gain table set
+
+---
+ drivers/iio/adc/ad9361.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/ad9361.c b/drivers/iio/adc/ad9361.c
+index 64178ec31fe8..651834c563f7 100644
+--- a/drivers/iio/adc/ad9361.c
++++ b/drivers/iio/adc/ad9361.c
+@@ -9489,7 +9489,7 @@ static int ad9361_probe(struct spi_device *spi)
+ 	phy->bin_gt.attr.mode = S_IWUSR | S_IRUGO;
+ 	phy->bin_gt.write = ad9361_gt_bin_write;
+ 	phy->bin_gt.read = ad9361_gt_bin_read;
+-	phy->bin_gt.size = 4096;
++	phy->bin_gt.size = 16384;
+ 
+ 	indio_dev->dev.parent = &spi->dev;
+ 

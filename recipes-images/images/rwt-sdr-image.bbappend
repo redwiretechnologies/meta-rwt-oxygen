@@ -12,4 +12,14 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     python3-pybind11 \
     gr-ieee80211 \
     gr-foo \
+    gr-adsb \
+    python3-colorama \
+    gr-mesa \
+    python3-bokeh \
+    gr-satellites \
+    python3-pybind11 \
+    python3-typing-extensions \
+    nodejs \
+    python3-construct \
+    python3-matplotlib \
 "
