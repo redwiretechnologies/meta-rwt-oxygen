@@ -5,13 +5,13 @@ file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302 \
 "
 
 inherit systemd
-SYSTEMD_SERVICE_${PN} = "rngd-reboot.service"
+SYSTEMD_SERVICE:${PN} = "rngd-reboot.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 SRC_URI = "file://rngd-reboot.service"
 
 S = "${WORKDIR}"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 do_install() {
     # For systemd

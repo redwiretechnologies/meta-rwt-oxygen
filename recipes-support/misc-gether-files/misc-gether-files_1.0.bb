@@ -4,7 +4,7 @@ LIC_FILES_CHKSUM = " \
 file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302 \
 "
 
-RDEPENDS_${PN} = "networkmanager"
+RDEPENDS:${PN} = "networkmanager"
 
 SRC_URI = "\
     file://usb0 \
@@ -15,8 +15,9 @@ SRC_URI = "\
     "
 S = "${WORKDIR}"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
+INSANE_SKIP:${PN} += "empty-dirs"
 
 do_install() {
     install -Dm 0644 ${S}/gadget.conf ${D}${sysconfdir}/modules-load.d/gadget.conf
@@ -26,7 +27,7 @@ do_install() {
     install -Dm 0644 ${S}/mass_storage.bin ${D}/media/mass_storage.bin
 }
 
-FILES_${PN} = "\
+FILES:${PN} = "\
     ${sysconfdir}/modules-load.d/gadget.conf \
     ${sysconfdir}/modprobe.d/gether.conf \
     ${sysconfdir}/modprobe.d/gmulti.conf \

@@ -10,7 +10,7 @@ LIC_FILES_CHKSUM = " \
 DTS_FILE = "default.dts"
 PERSONALITY = "default"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/bitfiles-default:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/bitfiles-default:"
 
 SRC_URI = " \
     file://2cg/system.xsa \

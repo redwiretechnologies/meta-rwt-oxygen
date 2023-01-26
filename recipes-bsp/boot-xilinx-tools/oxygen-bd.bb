@@ -9,8 +9,8 @@ inherit deploy
 
 DEPENDS += "unzip-native"
 
-LICENSE = "GPLv2+"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
+LICENSE = "GPLv2-only"
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 
 COMPATIBLE_MACHINE = "oxygen"
 
@@ -26,7 +26,7 @@ PROVIDES = " \
 
 SYSROOT_DIRS += "${PLATFORM_INIT_DIR}"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/oxygen-bd:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/oxygen-bd:"
 
 SRC_URI = " \
     file://2cg/system.xsa \
@@ -41,11 +41,11 @@ SRC_URI = " \
 
 MAIN_HDF = "main.xsa"
 
-COMPATIBLE_HOST_xilinx-standalone = "${HOST_SYS}"
+COMPATIBLE_HOST:xilinx-standalone = "${HOST_SYS}"
 PACKAGES = "${PN}-platform-init ${PN}-bitstream"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
-FILES_${PN}-bitstream += "/boot/*"
-FILES_${PN}-platform-init += "${PLATFORM_INIT_DIR}/*"
+FILES:${PN}-bitstream += "/boot/*"
+FILES:${PN}-platform-init += "${PLATFORM_INIT_DIR}/*"
 
 do_install() {
     all_xsas=${S}/*/system.xsa

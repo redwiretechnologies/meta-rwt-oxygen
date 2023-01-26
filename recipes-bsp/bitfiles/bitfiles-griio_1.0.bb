@@ -10,7 +10,7 @@ LIC_FILES_CHKSUM = " \
 DTS_FILE = "griio.dts"
 PERSONALITY = "griio"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/bitfiles-griio:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/bitfiles-griio:"
 
 SRC_URI = " \
     file://2cg/system.xsa \

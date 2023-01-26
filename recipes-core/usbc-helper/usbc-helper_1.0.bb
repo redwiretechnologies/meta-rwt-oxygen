@@ -15,10 +15,10 @@ SRC_URI = "\
 	"
 S = "${WORKDIR}"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
-LDFLAGS_append = " -lgpiod -li2c "
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+LDFLAGS:append = " -lgpiod -li2c "
 
-SYSTEMD_SERVICE_${PN} = "usbc-helper.service"
+SYSTEMD_SERVICE:${PN} = "usbc-helper.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 do_compile() {
@@ -37,7 +37,7 @@ do_install() {
     fi
 }
 
-FILES_${PN} = "\
+FILES:${PN} = "\
         ${bindir}/usbc_helper \
         ${sysconfdir}/usbc-helper.conf \
         "

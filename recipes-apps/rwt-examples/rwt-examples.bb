@@ -19,4 +19,4 @@ do_install() {
        install -m 0755 ${WORKDIR}/adsb_rx_rwt.grc ${D}/home/root/examples
        install -m 0755 ${WORKDIR}/led_blink.py ${D}/home/root/examples
 }
-FILES_${PN} ="/home/root/examples/* "
+FILES:${PN} ="/home/root/examples/* "

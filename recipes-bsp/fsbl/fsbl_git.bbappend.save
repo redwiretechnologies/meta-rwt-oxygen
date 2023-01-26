@@ -1,6 +1,0 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-
-SRC_URI += "file://0001-adding-trenz-files.patch \
-            file://0002-oxygen-Rev3-additions.patch \
-"
-

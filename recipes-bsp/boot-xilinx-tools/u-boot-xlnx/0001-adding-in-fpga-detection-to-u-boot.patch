@@ -1,0 +1,27 @@
+From d950bda4e622606dc2412d5b1bc21aabc7333156 Mon Sep 17 00:00:00 2001
+From: Toby Flynn <tflynn@redwiretechnology.com>
+Date: Wed, 18 Jan 2023 06:58:42 -0500
+Subject: [PATCH] adding in fpga detection to u-boot
+
+---
+ board/xilinx/zynqmp/zynqmp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/board/xilinx/zynqmp/zynqmp.c b/board/xilinx/zynqmp/zynqmp.c
+index 4c09532a69..a53ff8fa73 100644
+--- a/board/xilinx/zynqmp/zynqmp.c
++++ b/board/xilinx/zynqmp/zynqmp.c
+@@ -701,7 +701,12 @@ int board_late_init(void)
+ 			env_targets ? env_targets : "");
+ 
+ 	env_set("boot_targets", new_targets);
+-
++    
++    #if defined(CONFIG_FPGA) && defined(CONFIG_FPGA_ZYNQMPPL) && \
++    	    !defined(CONFIG_SPL_BUILD) || (defined(CONFIG_SPL_FPGA_SUPPORT) && \
++    			        defined(CONFIG_SPL_BUILD))
++            env_set("fpgadev",  &zynqmppl.name[2]);
++    #endif
+ 	reset_reason();
+ 
+ 	return board_late_init_xilinx();

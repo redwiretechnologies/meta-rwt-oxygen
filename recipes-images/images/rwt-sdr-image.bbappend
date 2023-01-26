@@ -4,6 +4,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     misc-gether-files \
     usbc-helper \
     rngd-reboot \
+    base-files \
     pciutils \
     dtc \
     rwt-examples \

@@ -10,16 +10,16 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 #inherit deploy xsctbase xsctyaml
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     /lib/firmware/rwt/${PERSONALITY}/overlay.dtbo \
     /lib/firmware/rwt/${PERSONALITY}/*/download.bin"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/bitfiles:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/bitfiles:"
 
 S = "${WORKDIR}"
 B = "${WORKDIR}/build"
 
-SRC_URI_append := " \
+SRC_URI:append := " \
     file://bootgen.bif \
     file://oxygen-transceiver-i2c.dtsi \
     file://oxygen-transceiver-spi.dtsi \
