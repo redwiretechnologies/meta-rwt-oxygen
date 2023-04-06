@@ -19,11 +19,21 @@ LICENSE_FLAGS_WHITELIST += "xilinx"
 MACHINE = "oxygen"
 
 # Require Xilinx SDK and use meta-xilinx-tools to build
-XILINX_VER_MAIN = "2018.2"
-XILINX_SDK_TOOLCHAIN = "/opt/Xilinx/SDK/2018.2"
+XILINX_VER_MAIN = "2020.2"
+XILINX_SDK_TOOLCHAIN = "/opt/Xilinx/Vitis/2020.2"
 
 ################################################################################
 
+PACKAGECONFIG_pn-gnuradio ="qtgui5 grc zeromq iio"
+LICENSE_FLAGS_WHITELIST += "xilinx"
+IMAGE_INSTALL_append = " xilinx-bootbin" 
+PREFERRED_PROVIDER_virtual/boot-bin = "xilinx-bootbin"
+DEVICETREE_FLAGS += "-@"
+PACKAGECONFIG_append_pn-libgpiod=" python3"
+CORE_IMAGE_EXTRA_INSTALL += " kernel-modules"
+PMU_FIRMWARE_IMAGE_NAME = "pmu-firmware-${MACHINE}"
+EXTRA_IMAGEDEPENDS_remove = "qemu-native"
+EXTRA_IMAGEDEPENDS_remove = "qemu-xilix-native"
 
 #DL_DIR = "/opt/oe/downloads"
 #SSTATE_DIR = "/opt/oe/sstate-cache"
