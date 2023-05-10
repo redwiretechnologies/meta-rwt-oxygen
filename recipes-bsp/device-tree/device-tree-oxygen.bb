@@ -20,9 +20,3 @@ FPGA_MNGR_RECONFIG_ENABLE = "1"
 COMPATIBLE_MACHINE = "oxygen"
 DTC_FLAGS:append = " -@"
 
-SRC_URI = " \
-        file://oxygen-pcw.dtsi \
-        file://oxygen.dts \
-        file://usb-host.dts \
-        file://usb-peripheral.dts \
-"

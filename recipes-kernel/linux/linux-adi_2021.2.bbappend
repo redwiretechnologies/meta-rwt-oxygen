@@ -5,10 +5,9 @@ SRC_URI += "file://usbmods.cfg \
             file://sensors.cfg \
             file://random.cfg \
             file://pci_usb3380.cfg \
-            file://power.cfg \
-            file://0001-allow-for-larger-gain-table-set.patch \
+            file://power.cfg  \
             "
-SRCREV = "${@ "cbdcc4022a5e9ff947533f0dc3542ff06cb5817d" if bb.utils.to_boolean(d.getVar('BB_NO_NETWORK')) else d.getVar('AUTOREV')}"
+KERNEL_VERSION_SANITY_SKIP="1"
 # The patch was suggested by Xilinx to speed up USB3; however, g_ether fails
 # whenever I try to use it.
 #
