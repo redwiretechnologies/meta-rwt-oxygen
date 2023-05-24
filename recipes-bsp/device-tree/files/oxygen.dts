@@ -10,6 +10,10 @@
 #include "zynqmp-clk-ccf.dtsi"
 #include "oxygen-pcw.dtsi"
 #include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pinctrl/pinctrl-zynqmp.h>
+#include <dt-bindings/phy/phy.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/gpio/gpio.h>
 
 / {
     chosen {
@@ -31,8 +35,9 @@
     clocks: clocks {
             ad9361_clkin: clock@0 {
                 #clock-cells = <0>;
-                compatible = "fixed-clock";
+                compatible = "adjustable-clock";
                 clock-frequency = <40000000>;
+                clock-accuracy = <200000>; /* 200 ppm (ppb) */
                 clock-output-names = "ad9361_ext_refclk";
             };
     };
@@ -88,14 +93,14 @@
 &qspi {
     #address-cells = <1>;
     #size-cells = <0>;
-    status = "okay";
     flash0: flash@0 {
-        compatible = "n25q256a";
+         compatible = "jedec,spi-nor";
         reg = <0x0>;
         #address-cells = <1>;
         #size-cells = <1>;
     };
 };
+
 
 /* DMA not used: Reduce error messages on linux.*/
 
@@ -152,9 +157,5 @@
       reg = <0x52>;
     };
 
-    /* @todo: Add support for ublox GPS.
-
-       This driver turns I2C into uart stream:
-           https://github.com/antmicro/tx2-deep-learning-kit-bsp/blob/master/kernel/kernel-4.4/drivers/tty/serial/ublox6-gps-i2c.c
-    */
+    
 };
