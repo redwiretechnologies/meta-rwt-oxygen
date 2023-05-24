@@ -1,6 +1,7 @@
 CORE_IMAGE_EXTRA_INSTALL += "\
     bitfiles-default \
     bitfiles-griio \
+    bitfiles-default-chan \
     misc-gether-files \
     usbc-helper \
     rngd-reboot \
