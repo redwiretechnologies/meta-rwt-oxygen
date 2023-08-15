@@ -23,8 +23,10 @@
 #include <signal.h>
 #include <sys/signalfd.h>
 
-#include <linux/i2c-dev.h>
-#include <i2c/smbus.h>
+extern "C" {
+    #include <linux/i2c-dev.h>
+    #include <i2c/smbus.h>
+}
 
 #define CONFIG_FILE "/etc/usbc-helper.conf"
 #define SYSFS_OVERLAY_DIR "/sys/kernel/config/device-tree/overlays/usb"
@@ -282,9 +284,9 @@ event_callback(
     case MODE_OTG_HOST:
     case MODE_OTG_DEV:
         if (event_type == GPIOD_CTXLESS_EVENT_CB_RISING_EDGE) {
-            load_devicetree("rwt/usb-peripheral.dtbo");
+            load_devicetree((char *) "rwt/usb-peripheral.dtbo");
         } else {
-            load_devicetree("rwt/usb-host.dtbo");
+            load_devicetree((char *) "rwt/usb-host.dtbo");
         }
         break;
 
@@ -552,7 +554,9 @@ main(int argc, char **argv)
     rmdir(SYSFS_OVERLAY_DIR);
 
     /* Setup GPIO's for controlling USB-2 switches and v-bus. */
-    setup_gpio();
+    if (!setup_gpio())
+        close_gpio();
+
 
     /* Setup mode on USB-C controller. */
     set_usbc_mode();
@@ -560,9 +564,9 @@ main(int argc, char **argv)
     /* Load device tree. Host is only loaded if explicitly in host mode. Any
        other mode sets it up in device mode first. */
     if (mode == MODE_HOST) {
-        load_devicetree("rwt/usb-host.dtbo");
+        load_devicetree((char *) "rwt/usb-host.dtbo");
     } else {
-        load_devicetree("rwt/usb-peripheral.dtbo");
+        load_devicetree((char *) "rwt/usb-peripheral.dtbo");
     }
 
     /* Loops forever waiting for changes on the 'ID' pin. The loop is
@@ -579,7 +583,6 @@ main(int argc, char **argv)
 
     /* Cleanup */
     close(sigfd);
-    close_gpio();
 
     return 0;
 }
