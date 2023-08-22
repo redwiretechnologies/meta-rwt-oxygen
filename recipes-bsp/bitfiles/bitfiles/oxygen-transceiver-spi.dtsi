@@ -230,7 +230,7 @@ adc0_ad9361: ad9361-phy@0 {
     adi,aux-dac2-tx-delay-us = <0>;
 
 
-    /*---------------- HHDEV additions ------------------- */
+    /*---------------- RWT Oxygen additions ------------------- */
     en_agc-gpios = <&gpio 122 0>;
     sync-gpios = <&gpio 123 0>;
     reset-gpios = <&gpio 124 0>;
