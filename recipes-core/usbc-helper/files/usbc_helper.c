@@ -23,10 +23,10 @@
 #include <signal.h>
 #include <sys/signalfd.h>
 
-extern "C" {
-    #include <linux/i2c-dev.h>
-    #include <i2c/smbus.h>
-}
+
+#include <linux/i2c-dev.h>
+#include <i2c/smbus.h>
+
 
 #define CONFIG_FILE "/etc/usbc-helper.conf"
 #define SYSFS_OVERLAY_DIR "/sys/kernel/config/device-tree/overlays/usb"
