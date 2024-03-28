@@ -140,6 +140,11 @@
 &sdhci1 {
    disable-wp;
    no-1-8-v;
+   status = "okay";
+  /* xlnx,mio-bank = <1>;
+   clk-phase-sd-hs = <126>, <60>;
+   clk-phase-uhs-sdr25 = <120>, <60>;
+   clk-phase-uhs-ddr50 = <126>, <48>;*/
    /* broken-adma2; */
 };
 

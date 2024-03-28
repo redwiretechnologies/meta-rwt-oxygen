@@ -10,7 +10,8 @@ UBOOT_MAKE_TARGET:append = " EXT_DTB=${DEPLOY_DIR_IMAGE}/oxygen.dtb"
 do_configure:append () {
     
 	install ${WORKDIR}/platform-top.h ${S}/include/configs/
-    install ${WORKDIR}/config2.cfg ${S}/configs/${UBOOT_MACHINE}
+	install ${WORKDIR}/config2.cfg ${S}/configs/${UBOOT_MACHINE}
+  
 }
 
 #do_configure_append () {
@@ -27,6 +28,6 @@ do_configure:append () {
 #     file://platform-top.h \
 #     "
 SRC_URI += "\
-     file://config2.cfg \
      file://platform-top.h \
+     file://config2.cfg \
      "
