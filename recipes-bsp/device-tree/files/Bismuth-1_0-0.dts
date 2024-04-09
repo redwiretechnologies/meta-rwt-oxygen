@@ -6,13 +6,13 @@
     fragment@0 {
         target = <&i2c1>;
         __overlay__ {
-            pa-temp-sensor@18 {
+            pa-temp-sensor_0@18 {
                 compatible = "jedec,jc-42.4-temp";
                 reg = <0x18>;
             };
 
 
-            pca9534@25 {
+            pca9534_0@25 {
                 compatible = "nxp,pca9534";
                 reg = <0x25>;
                 gpio-controller;

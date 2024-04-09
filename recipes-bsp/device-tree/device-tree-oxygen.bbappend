@@ -9,7 +9,9 @@ SRC_URI = " \
         file://oxygen.dts \
         file://usb-host.dts \
         file://usb-peripheral.dts \
-        file://hppersonality.dts \
+        file://Bismuth-1_0-0.dts \
+        file://Selenium-1_0-0.dts \
+        file://Tellurium-1_0-0.dts \
 "
 
 FILES:${PN} +=  " /lib/firmware/rwt/*.dtbo "
