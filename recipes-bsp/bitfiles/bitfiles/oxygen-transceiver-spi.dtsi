@@ -1,6 +1,4 @@
 adc0_ad9361: ad9361-phy@0 {
-    #address-cells = <2>;
-    #size-cells = <2>;
     compatible = "adi,ad9361";
 
     /* SPI Setup */

@@ -11,8 +11,8 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 #inherit deploy xsctbase xsctyaml
 
 FILES:${PN} = " \
-    /lib/firmware/rwt/${PERSONALITY}/overlay.dtbo \
-    /lib/firmware/rwt/${PERSONALITY}/*/download.bin"
+    ${libdir}/firmware/rwt/${PERSONALITY}/overlay.dtbo \
+    ${libdir}/firmware/rwt/${PERSONALITY}/*/download.bin"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/bitfiles:"
 
@@ -71,13 +71,13 @@ do_compile() {
 }
 
 do_install() {
-    install -d ${D}/lib/firmware/rwt/${PERSONALITY}
-    install -Dm 0644 ${B}/overlay.dtbo ${D}/lib/firmware/rwt/${PERSONALITY}/
+    install -d ${D}/${libdir}/firmware/rwt/${PERSONALITY}
+    install -Dm 0644 ${B}/overlay.dtbo ${D}/${libdir}/firmware/rwt/${PERSONALITY}/
 
     all_bitfiles=${B}/*/download.bin
     for bf in ${all_bitfiles}; do
         device=$(dirname ${bf} | xargs -n1 basename)
-        install -d ${D}/lib/firmware/rwt/${PERSONALITY}/${device}/
-        install -Dm 0644 ${bf} ${D}/lib/firmware/rwt/${PERSONALITY}/${device}/
+        install -d ${D}/${libdir}/firmware/rwt/${PERSONALITY}/${device}/
+        install -Dm 0644 ${bf} ${D}/${libdir}/firmware/rwt/${PERSONALITY}/${device}/
     done
 }
