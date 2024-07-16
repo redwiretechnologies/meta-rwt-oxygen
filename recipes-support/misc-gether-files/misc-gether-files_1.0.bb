@@ -12,7 +12,6 @@ SRC_URI = "\
     file://gadget.conf \
     file://modprobe_gether.conf \
     file://modprobe_gmulti.conf \
-    file://10-globally-managed-devices.conf \
     "
 S = "${WORKDIR}"
 
@@ -26,7 +25,6 @@ do_install() {
     install -Dm 0644 ${S}/modprobe_gether.conf ${D}${sysconfdir}/modprobe.d/gether.conf
     install -Dm 0644 ${S}/modprobe_gmulti.conf ${D}${sysconfdir}/modprobe.d/gmulti.conf
     install -Dm 0644 ${S}/mass_storage.bin ${D}/media/mass_storage.bin
-    install -Dm 0644 ${S}/10-globally-managed-devices.conf ${D}${sysconfdir}//NetworkManager/conf.d/10-globally-managed-devices.conf
 }
 
 FILES:${PN} = "\
@@ -34,6 +32,5 @@ FILES:${PN} = "\
     ${sysconfdir}/modprobe.d/gether.conf \
     ${sysconfdir}/modprobe.d/gmulti.conf \
     ${sysconfdir}/NetworkManager/system-connections/usb0 \
-    ${sysconfdir}/NetworkManager/conf.d/10-globally-managed-devices.conf \
     /media/mass_storage.bin \
     "
