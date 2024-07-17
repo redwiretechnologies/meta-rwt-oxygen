@@ -1,0 +1,26 @@
+From 065078939996c891f67a866bd967ca116ee4053a Mon Sep 17 00:00:00 2001
+From: Toby Flynn <tflynn@redwiretechnology.com>
+Date: Fri, 1 Dec 2023 09:38:01 -0500
+Subject: [PATCH] fpga type pass through
+
+---
+ board/xilinx/zynqmp/zynqmp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/board/xilinx/zynqmp/zynqmp.c b/board/xilinx/zynqmp/zynqmp.c
+index 5326e31c91..1d9c0870a6 100644
+--- a/board/xilinx/zynqmp/zynqmp.c
++++ b/board/xilinx/zynqmp/zynqmp.c
+@@ -522,6 +522,12 @@ int board_late_init(void)
+ 				env_targets ? env_targets : "");
+ 
+ 		env_set("boot_targets", new_targets);
++        #if defined(CONFIG_FPGA) && defined(CONFIG_FPGA_ZYNQMPPL) && \
++                    !defined(CONFIG_SPL_BUILD) || (defined(CONFIG_SPL_FPGA_SUPPORT) && \
++                    defined(CONFIG_SPL_BUILD))
++                    env_set("fpgadev",  &zynqmppl.name[2]);
++        #endif
++                    
+ 		free(new_targets);
+ 	}
+ 

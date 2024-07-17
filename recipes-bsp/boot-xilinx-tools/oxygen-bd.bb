@@ -9,7 +9,7 @@ inherit deploy
 
 DEPENDS += "unzip-native"
 
-LICENSE = "GPLv2-only"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/GPL-2.0-only;md5=801f80980d171dd6425610833a22dbe6"
 
 COMPATIBLE_MACHINE = "oxygen"
@@ -72,6 +72,7 @@ do_deploy () {
     install -m 0644 ${S}/${MAIN_HDF} ${DEPLOYDIR}/Xilinx-${MACHINE}.xsa
 
     install -m 0644 ${D}/boot/download.*.bin ${DEPLOYDIR}/
+
 }
 
 addtask do_deploy after do_install

@@ -6,6 +6,8 @@ do_configure[depends] += "device-tree-oxygen:do_deploy"
 
 UBOOT_MAKE_TARGET:append = " EXT_DTB=${DEPLOY_DIR_IMAGE}/oxygen.dtb"
 
+EXTRA_OEMAKE += " EXT_DTB=${DEPLOY_DIR_IMAGE}/oxygen.dtb"
+DTB_FILE_NAME = "oxygen"
 
 do_configure:append () {
     
@@ -30,4 +32,5 @@ do_configure:append () {
 SRC_URI += "\
      file://platform-top.h \
      file://config2.cfg \
+     file://0001-fpga-type-pass-through.patch \
      "

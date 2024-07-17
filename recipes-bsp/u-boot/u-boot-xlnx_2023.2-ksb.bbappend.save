@@ -1,0 +1,9 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
+SRCREV ="0fc19cad5a07a09958443e7a5b6f11e420ef195c"
+UBRANCH = "xlnx_rebase_v2023.01"
+
+#SRC_URI += "file://0001-pass-through-fpga-type-information.patch"
+
+SRC_URI += "file://0001-fpga-type-pass-through.patch"
+

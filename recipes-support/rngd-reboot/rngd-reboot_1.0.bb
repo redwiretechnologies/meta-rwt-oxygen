@@ -10,12 +10,11 @@ SYSTEMD_AUTO_ENABLE = "enable"
 
 SRC_URI = "file://rngd-reboot.service"
 
-S = "${WORKDIR}"
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+FILES:${PN} += "${systemd_system_unitdir}/rngd-reboot.service"
 
 do_install() {
     # For systemd
-    if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-        install -D -m 0644 ${S}/rngd-reboot.service ${D}${systemd_system_unitdir}/rngd-reboot.service
-    fi
+        install -d ${D}/${systemd_unitdir}/system
+        install -D -m 0644 ${WORKDIR}/rngd-reboot.service ${D}${systemd_system_unitdir}/rngd-reboot.service
+    
 }

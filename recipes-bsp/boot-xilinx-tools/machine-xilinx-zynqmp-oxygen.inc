@@ -3,7 +3,7 @@ FPGA_MNGR_RECONFIG_ENABLE = '1'
 BIF_COMMON_ATTR = ""
 BIF_DEVICETREE_ATTR = "device-tree-oxygen"
 # specify BIF partition attributes required for BOOT.bin
-BIF_PARTITION_ATTR:zynqmp = "fsbl pmufw arm-trusted-firmware u-boot-xlnx"
+BIF_PARTITION_ATTR:zynqmp = "fsbl pmufw arm-trusted-firmware device-tree-oxygen u-boot-xlnx"
 
 # specify BIF partition attributes for FSBL
 # bootloader is FSBL. Location where FSBL binary is present and dependency to build FSBL
@@ -16,6 +16,7 @@ BIF_PARTITION_DEPENDS[fsbl] = "virtual/fsbl:do_deploy"
 BIF_PARTITION_ATTR[pmufw] = "destination_cpu=pmu"
 BIF_PARTITION_IMAGE[pmufw] = "${DEPLOY_DIR_IMAGE}/pmu-firmware-${MACHINE}.elf"
 BIF_PARTITION_DEPENDS[pmufw] = "virtual/pmu-firmware:do_deploy"
+
 
 # specify BIF partition attributes for ATF
 # destination cpu for ATF, security levels. Location where ATF binary is present (dependency is not required as ATF is always built for ZU+, see zcu102-zynqmp.conf)
@@ -30,3 +31,7 @@ BIF_PARTITION_IMAGE[arm-trusted-firmware] ?= "${RECIPE_SYSROOT}/boot/arm-trusted
 BIF_PARTITION_ATTR[u-boot-xlnx] = "destination_cpu=a53-0,exception_level=el-2"
 BIF_PARTITION_IMAGE[u-boot-xlnx] = "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.elf"
 BIF_PARTITION_DEPENDS[u-boot-xlnx] = "virtual/bootloader:do_deploy"
+
+# specify BIF partition attributes for dtb
+BIF_PARTITION_ATTR[device-tree-oxygen] ?= "destination_cpu=a53-0,load=0x100000"
+BIF_PARTITION_IMAGE[device-tree-oxygen] ?= "${RECIPE_SYSROOT}/boot/devicetree/oxygen.dtb"

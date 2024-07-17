@@ -27,9 +27,10 @@
         spi0 = &qspi;
         spi1 = &spi0;
     };
-    memory {
+    memory@0 {
         device_type = "memory";
-        reg = <0x0 0x0 0x0 0x40000000>;
+        reg = <0x0 0x0 0x0 0x7ff00000>;
+        
     };
 
     clocks: clocks {
@@ -102,40 +103,38 @@
 
 &psgtr {
         status = "okay";
+        #clock-cells = <0x01>;
         clocks = <&refclk1>, <&refclk2>, <&refclk3>, <&refclk4>;
         /* ref clk instances used per lane */
         clock-names = "ref0", "ref1", "ref2", "ref3";
 };
 
+
+/*-------------------- QSPI ---------------------*/
 &qspi {
-    #address-cells = <1>;
-    #size-cells = <0>;
-    flash0: flash@0 {
-        compatible = "n25q512a","micron,m25p80";
-        spi-tx-bus-width=<1>;
-        spi-rx-bus-width=<4>;
-        reg = <0x0>;
+    num-cs = <2>;
+ 
+    flash@0 {
+        compatible = "jedec,spi-nor";
+        reg = <0>, <1>;
+        parallel-memories = /bits/ 64 <0x1000000 0x1000000>; /* 2* 16MB --> dummy for all types of this QSPI type */
+ 
+        spi-rx-bus-width = <4>;
+        spi-tx-bus-width = <4>;
+        spi-max-frequency = <40000000>; //40MHz no real feedback pin
+         
         #address-cells = <1>;
-        #size-cells = <1>;
-        spi-max-frequency = <108000000>;
-        partition@0x00000000 {
-            label = "boot";
-            reg = <0x00000000 0x00100000>;
-        };
-        partition@0x00100000 {
-            label = "bootenv";
-            reg = <0x00100000 0x00040000>;
-        };
-        partition@0x00140000 {
-            label = "kernel";
-            reg = <0x00140000 0x01600000>;
-        };
+        #size-cells = <1>;       
     };
 };
 
 
 
 /* SDIO */
+&sdhci0 {
+    // disable-wp;
+    no-1-8-v;
+};
 
 &sdhci1 {
    disable-wp;
@@ -191,17 +190,16 @@
 
 &usb0 {
 	status = "disabled";
+    phy-names = "usb3-phy";
+    phys = <&psgtr 2 PHY_TYPE_USB3 0 3>;
+   /* phys = <&lane2 4 0 3 100000000>;*/
 };
 
 &dwc3_0 {
     status = "disabled";
-    dr_mode = "peripheral";
+    dr_mode = "host";
     maximum-speed = "super-speed";
     snps,usb3_lpm_capable;
-    snps,dis_u3_susphy_quirk;
-    phy-names = "usb3-phy";
-    phys = <&psgtr 2 PHY_TYPE_USB3 0 3>;
-   /* phys = <&lane2 4 0 3 100000000>;*/
 };
 
 
