@@ -11,17 +11,25 @@
 # the option is a question of removing the # character and making any change to the
 # variable as required.
 
+DISTRO_FEATURES:append = " opengl x11 ptest"
+PACKAGECONFIG:pn-gnuradio = "grc zeromq logging iio"
+PACKAGECONFIG:pn-gr-osmosdr = "rtl-sdr hackrf rfspace"
 
+
+DTB_FILE_NAME = "oxygen"
 
 RM_WORK_EXCLUDE += "python3-pyadi-iio"
 ################################################################################
 #### oxygen Machine Configuration
 
-MACHINE = "oxygen"
-
 # Require Xilinx SDK and use meta-xilinx-tools to build
-XILINX_VER_MAIN = "2021.2"
-XILINX_SDK_TOOLCHAIN = "/opt/Xilinx/Vitis/2021.2"
+XILINX_RELEASE_VERSION = "v2023.2"
+XILINX_XSCT_VERSION = "2023.2"
+XILINX_UBOOT_VERSION = "v2023.2"
+#XILINX_UBOOT_VERSION = "2023.2"
+
+XILINX_VER_MAIN = "2023.2"
+XILINX_SDK_TOOLCHAIN = "/opt/Xilinx/Vitis/2023.2"
 INHERIT += "rm_work"
 
 ################################################################################
@@ -65,7 +73,7 @@ DISTRO ?= "poky-rwt"
 #MACHINE ?= "qemux86-64"
 #
 # This sets the default machine to be qemux86 if no other machine is selected:
-#MACHINE ??= "qemux86-64"
+MACHINE ??= "oxygen"
 
 #
 # Where to place downloads
