@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-xlnx:"
 
 COMPATIBLE_MACHINE = "oxygen"
-
+DEVICE_TREE_NAME = "oxygen.dtb"
 do_configure[depends] += "device-tree-oxygen:do_deploy"
 
 UBOOT_MAKE_TARGET:append = " EXT_DTB=${DEPLOY_DIR_IMAGE}/oxygen.dtb"

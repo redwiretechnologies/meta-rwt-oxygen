@@ -24,7 +24,7 @@ BIF_PARTITION_DEPENDS[pmufw] = "virtual/pmu-firmware:do_deploy"
 #BIF_PARTITION_IMAGE[atf] = "${DEPLOY_DIR_IMAGE}/arm-trusted-firmware.elf"
 #BIF_PARTITION_DEPENDS[atf] = "arm-trusted-firmware:do_deploy"
 BIF_PARTITION_ATTR[arm-trusted-firmware] ?= "destination_cpu=a53-0,exception_level=el-3,trustzone"
-BIF_PARTITION_IMAGE[arm-trusted-firmware] ?= "${RECIPE_SYSROOT}/boot/arm-trusted-firmware.elf"
+BIF_PARTITION_IMAGE[arm-trusted-firmware] ?= "${DEPLOY_DIR_IMAGE}/boot/arm-trusted-firmware.elf"
 
 # specify BIF partition attributes for u-boot
 # destination cpu for u-boot, security levels. Location where u-boot binary is present (dependency is not required as u-boot is always built for ZU+, see zcu102-zynqmp.conf)

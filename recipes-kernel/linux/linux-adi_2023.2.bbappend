@@ -1,6 +1,8 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI += "file://usbmods.cfg \
+SRC_URI += "file://1-3-spi-dt-bindings-nxp-sc18is602-convert-binding-to-YAML.patch \
+            file://2-3-spi-dt-bindings-nxp-sc18is602-add-compatible-for-SC18IS606.patch \
+            file://usbmods.cfg \
             file://moreusb.cfg \
             file://sensors.cfg \
             file://random.cfg \

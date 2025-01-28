@@ -14,10 +14,20 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     python3-pybind11 \
     python3-colorama \
     python3-bokeh \
+    gr-ieee80211 \
+    gr-foo \
+    gr-adsb \
+    gr-mesa \
+    gr-satellites \
+    gr-pager \
+    gr-mesa \
+    gr-lora-sdr \
+    gr-air-modes \
+    gr-ais \
     python3-pybind11 \
     python3-typing-extensions \
-    nodejs \
     python3-construct \
     python3-matplotlib \
     device-tree-oxygen \
+    python3-gunicorn \
 "

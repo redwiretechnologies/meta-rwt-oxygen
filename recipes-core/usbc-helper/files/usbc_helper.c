@@ -30,7 +30,7 @@
 
 #define CONFIG_FILE "/etc/usbc-helper.conf"
 #define SYSFS_OVERLAY_DIR "/sys/kernel/config/device-tree/overlays/usb"
-#define GPIO_CHIP "0"
+#define GPIO_CHIP "1"
 #define GPIO_CONSUMER "usbc-helper"
 #define GPIO_PIN_ID 27
 #define I2C_BUS 1

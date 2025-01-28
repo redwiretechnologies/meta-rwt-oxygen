@@ -18,7 +18,7 @@
                 gpio-controller;
                 #gpio-cells = <2>;
                 interrupt-parent = <&gpio>;
-                interrupts = <99 8>; /* IRQ_TYPE_LEVEL_LOW IRQ_TYPE_EDGE_FALLING */
+                interrupts = <94 8>; /* IRQ_TYPE_LEVEL_LOW IRQ_TYPE_EDGE_FALLING */
                 gpio-line-names = "C_RX_HPF_SEL3", "C_TX_PWR_LV_0", "C_TX_PWR_LV_1", "C_TX_FILT_SEL1", "C_TX_FILT_SEL2", "C_TX_FILT_SEL3", "C_TX_PA2_OVTMPn", "C_PA_ENAB";
             };
         };
