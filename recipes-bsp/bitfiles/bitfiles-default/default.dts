@@ -95,6 +95,7 @@
                 #clock-cells = <0>;
                 interrupts = <0 109 4>;
                 clocks = <&zynqmp_clk 71>;
+                dma-coherent;
 
                 adi,channels {
                     #size-cells = <0>;
@@ -117,6 +118,7 @@
                 #clock-cells = <0>;
                 interrupts = <0 108 4>;
                 clocks = <&zynqmp_clk 71>;
+                dma-coherent;
 
                 adi,channels {
                     #size-cells = <0>;
