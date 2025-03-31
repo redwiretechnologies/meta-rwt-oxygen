@@ -14,11 +14,14 @@
 
             pca9534_0@20 {
                 compatible = "nxp,pca9534";
+                label = "Bismuth_0";
                 reg = <0x20>;
                 gpio-controller;
                 #gpio-cells = <2>;
                 interrupt-parent = <&gpio>;
                 interrupts = <99 8>; /* IRQ_TYPE_LEVEL_LOW IRQ_TYPE_EDGE_FALLING  */
+                gpio-line-names = "LNA1_SATn", "LNA2_SATn", "TX_PA1_FLTn", "TX_PA2_OCn", "TX_PA2_OVTMPn", "RX_ATT_SEL_1", "RX_ATT_SEL_2", "PA_ENAB";
+
             };
         };
     };
