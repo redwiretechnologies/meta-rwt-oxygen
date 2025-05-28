@@ -10,7 +10,7 @@
 
             pca9534_0@20 {
                 compatible = "nxp,pca9534";
-                label = "Bismuth_0";
+                label = "BISMUTH-2_0-0";
                 reg = <0x20>;
                 gpio-controller;
                 #gpio-cells = <2>;

@@ -8,6 +8,7 @@
         __overlay__ {
                   pca9534_0@20 {
                     compatible = "nxp,pcal6408";
+                    label = "ARGON-1_0-0";
                     reg = <0x20>;
                     gpio-controller;
                     #gpio-cells = <2>;
