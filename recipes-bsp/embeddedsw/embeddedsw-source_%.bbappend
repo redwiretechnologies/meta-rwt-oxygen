@@ -7,3 +7,7 @@ SRC_URI += " file://0001-te-install-general-hooks-zynqmp.patch \
              file://0001-moving-shutdown-to-power-on-MI032.patch "
 
 #SRC_URI += "file://0001-moving-shutdown-to-power-on-MI032.patch "
+
+
+
+
