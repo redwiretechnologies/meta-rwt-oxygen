@@ -1,3 +1,4 @@
+IMAGE_INSTALL:append = "kernel-dev kernel-devsrc kernel-modules"
 CORE_IMAGE_EXTRA_INSTALL += "\
     bitfiles-default \
     bitfiles-griio \
