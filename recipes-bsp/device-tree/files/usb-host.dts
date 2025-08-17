@@ -7,6 +7,8 @@
         target = <&usb0>;
         __overlay__ {
             status = "okay";
+            snps,usb2_lpm_capable = <0>;
+            snps,usb3_lpm_capable = <0>;
         };
     };
 
@@ -15,6 +17,8 @@
         __overlay__ {
             status = "okay";
             dr_mode = "host";
+            snps,usb2_lpm_capable = <0>;
+            snps,usb3_lpm_capable = <0>;
         };
     };
 };
