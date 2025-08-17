@@ -22,4 +22,7 @@ BBLAYERS ?= " \
   ##COREBASE##/../meta-sdr \
   ##COREBASE##/../meta-rwt-common \
   ##COREBASE##/../meta-rwt-oxygen \
+  ##COREBASE##/../meta-arm/meta-arm \
+  ##COREBASE##/../meta-arm/meta-arm-toolchain \
+  ##COREBASE##/../meta-python3-webcomponents \
   "
