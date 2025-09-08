@@ -31,7 +31,6 @@ XILINX_UBOOT_VERSION = "v2023.2"
 #XILINX_UBOOT_VERSION = "2023.2"
 
 XILINX_VER_MAIN = "2023.2"
-XILINX_SDK_TOOLCHAIN = "/opt/Xilinx/Vitis/2023.2"
 INHERIT += "rm_work"
 
 ################################################################################
