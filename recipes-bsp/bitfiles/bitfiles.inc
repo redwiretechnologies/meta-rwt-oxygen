@@ -1,6 +1,6 @@
 
 INHIBIT_DEFAULT_DEPS = "1"
-DEPENDS += "dtc-native unzip-native device-tree-oxygen"
+DEPENDS += "dtc-native unzip-native device-tree-oxygen bootgen-native"
 
 COMPATIBLE_MACHINE ?= "oxygen"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
@@ -66,7 +66,7 @@ do_compile() {
         unzip -o ${xsa} ${bitfile} -d ${B}/${device}/
         mv ${B}/${device}/${bitfile} ${B}/${device}/download.bit
 
-        (cd ${B}/${device} && ${XILINX_SDK_TOOLCHAIN}/bin/bootgen -image ${S}/bootgen.bif -arch zynqmp -w -o download.bin)
+        (cd ${B}/${device} && bootgen -image ${S}/bootgen.bif -arch zynqmp -w -o download.bin)
     done
 }
 
