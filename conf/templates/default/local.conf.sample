@@ -165,7 +165,7 @@ PACKAGE_CLASSES ?= "package_rpm"
 # We default to enabling the debugging tweaks.
 EXTRA_IMAGE_FEATURES = "debug-tweaks "
 
-IMAGE_FSTYPES = "tar.gz wic"
+#IMAGE_FSTYPES = "tar.gz wic wic.bmap"
 
 #
 # Additional image features
