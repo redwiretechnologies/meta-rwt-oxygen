@@ -29,8 +29,9 @@ BIF_PARTITION_IMAGE[arm-trusted-firmware] ?= "${DEPLOY_DIR_IMAGE}/boot/arm-trust
 # specify BIF partition attributes for u-boot
 # destination cpu for u-boot, security levels. Location where u-boot binary is present (dependency is not required as u-boot is always built for ZU+, see zcu102-zynqmp.conf)
 BIF_PARTITION_ATTR[u-boot-xlnx] = "destination_cpu=a53-0,exception_level=el-2"
-BIF_PARTITION_IMAGE[u-boot-xlnx] = "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.elf"
-BIF_PARTITION_DEPENDS[u-boot-xlnx] = "virtual/bootloader:do_deploy"
+BIF_PARTITION_IMAGE[u-boot-xlnx] ?= "${RECIPE_SYSROOT}/boot/u-boot.elf"
+#BIF_PARTITION_IMAGE[u-boot-xlnx] = "${DEPLOY_DIR_IMAGE}/u-boot-${MACHINE}.elf"
+#BIF_PARTITION_DEPENDS[u-boot-xlnx] = "virtual/bootloader:do_deploy"
 
 # specify BIF partition attributes for dtb
 BIF_PARTITION_ATTR[device-tree-oxygen] ?= "destination_cpu=a53-0,load=0x100000"

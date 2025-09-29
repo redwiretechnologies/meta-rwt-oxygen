@@ -42,7 +42,7 @@
                 compatible    = "ikwzm,fclkcfg";
                 device-name   = "fpga-clk1";
                 clocks        = <&zynqmp_clk 72>, <&zynqmp_clk 0>;
-                insert-rate   = "185000000";
+                insert-rate   = "200000000";
                 insert-enable = <1>;
                 remove-enable = <0>;
             };
@@ -88,7 +88,7 @@
             #size-cells = <0x1>;
             ranges = <0 0 0 0xffffffff>;
 
-            rx_dma: dma@9c400000 {
+            rx_dma: dma-controller@9c400000 {
                 compatible = "adi,axi-dmac-1.00.a";
                 reg = <0x9c400000 0x10000>;
                 #dma-cells = <1>;
@@ -97,21 +97,9 @@
                 clocks = <&zynqmp_clk 71>;
                 dma-coherent;
 
-                adi,channels {
-                    #size-cells = <0>;
-                    #address-cells = <1>;
-
-                    dma-channel@0 {
-                        reg = <0>;
-                        adi,source-bus-width = <64>;
-                        adi,source-bus-type = <2>;
-                        adi,destination-bus-width = <64>;
-                        adi,destination-bus-type = <0>;
-                    };
-                };
             };
 
-            tx_dma: dma@9c420000  {
+            tx_dma: dma-controller@9c420000  {
                 compatible = "adi,axi-dmac-1.00.a";
                 reg = <0x9c420000 0x10000>;
                 #dma-cells = <1>;
@@ -120,18 +108,7 @@
                 clocks = <&zynqmp_clk 71>;
                 dma-coherent;
 
-                adi,channels {
-                    #size-cells = <0>;
-                    #address-cells = <1>;
 
-                    dma-channel@0 {
-                        reg = <0>;
-                        adi,source-bus-width = <64>;
-                        adi,source-bus-type = <0>;
-                        adi,destination-bus-width = <64>;
-                        adi,destination-bus-type = <2>;
-                    };
-                };
             };
 
             cf_ad9361_adc_core_0: cf-ad9361-lpc@99020000 {

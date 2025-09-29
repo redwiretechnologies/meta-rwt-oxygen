@@ -18,7 +18,15 @@ SRC_URI:append = " \
 INSANE_SKIP:${PN} ="installed-vs-shipped"
 FILES:${PN} +=  " ${libdir}/firmware/rwt/*.dtbo "
 
-DTB_FILE_NAME = "oxygen.dtb"
+DEPENDS += "python3-dtc-native"
+
+PROVIDES = "virtual/dtb"
+BASE_DTS = "oxygen"
+
+DTB_FILE_NAME = "${BASE_BTS}.dtb"
+DTB_BASE_NAME ?= "${MACHINE}-system${IMAGE_VERSION_SUFFIX}"
+KERNEL_DEVICETREE = "${BASE_BTS}.dtb"
+
 do_install:append() {
     for DTB_FILE in `ls *.dtbo`; do
         install -Dm 0644 ${B}/${DTB_FILE} ${D}/${libdir}/firmware/rwt/${DTB_FILE}

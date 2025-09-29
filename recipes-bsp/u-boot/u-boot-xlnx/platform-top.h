@@ -1,7 +1,7 @@
 #ifndef PLATFORM_TOP_H
 #define PLATFORM_TOP_H
 
-#define CONFIG_EXTRA_ENV_SETTINGS               \
+#define CFG_EXTRA_ENV_SETTINGS               \
     "sdbootdev=1\0" \
     "kernel_load_address=0x80000\0" \
     "devicetree_load_address=0x4000000\0" \

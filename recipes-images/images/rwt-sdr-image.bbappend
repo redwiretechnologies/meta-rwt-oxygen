@@ -30,4 +30,5 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     python3-matplotlib \
     device-tree-oxygen \
     python3-gunicorn \
+    kernel-devsrc \
 "

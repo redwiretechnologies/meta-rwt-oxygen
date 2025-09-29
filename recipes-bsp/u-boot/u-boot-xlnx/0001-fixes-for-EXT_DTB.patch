@@ -1,0 +1,38 @@
+From beda48a208af70fd9279e69c198ea111f55b6317 Mon Sep 17 00:00:00 2001
+From: Toby Flynn <tflynn@redwiretechnology.com>
+Date: Fri, 20 Jun 2025 09:32:17 -0400
+Subject: [PATCH] fixes for EXT_DTB
+
+---
+ Makefile | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index dcf5ba9ed75..0a99bf997a5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1335,15 +1335,17 @@ u-boot.ldr:	u-boot
+ # ---------------------------------------------------------------------------
+ # Use 'make BINMAN_DEBUG=1' to enable debugging
+ # Use 'make BINMAN_VERBOSE=3' to set vebosity level
+-default_dt := $(if $(DEVICE_TREE),$(DEVICE_TREE),$(CONFIG_DEFAULT_DEVICE_TREE))
+ 
+-binman_dtb := $(shell echo $(CONFIG_BINMAN_DTB))
+-ifeq ($(strip $(binman_dtb)),)
+-ifeq ($(CONFIG_OF_EMBED),y)
+-binman_dtb = ./dts/dt.dtb
++
++ifneq ($(EXT_DTB),)Add commentMore actions
++ext_dtb_list := $(basename $(notdir $(EXT_DTB)))
++default_dt := $(firstword $(ext_dtb_list))
++of_list := "$(ext_dtb_list)"
++of_list_dirs := $(dir $(EXT_DTB))
+ else
+-binman_dtb = ./u-boot.dtb
+-endif
++of_list := $(CONFIG_OF_LIST)
++of_list_dirs := $(dt_dir)
++default_dt := $(if $(DEVICE_TREE),$(DEVICE_TREE),$(CONFIG_DEFAULT_DEVICE_TREE))
+ endif
+ 
+ quiet_cmd_binman = BINMAN  $@

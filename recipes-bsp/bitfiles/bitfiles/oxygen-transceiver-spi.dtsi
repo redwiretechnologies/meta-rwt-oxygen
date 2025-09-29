@@ -30,7 +30,7 @@ adc0_ad9361: ad9361-phy@0 {
     adi,lvds-rx-onchip-termination-enable;
     adi,rx-data-delay = <4>;
     adi,tx-fb-clock-delay = <7>;
-    adi,clk-output-mode-select = <1>;
+    //adi,clk-output-mode-select = <1>;
 
     //adi,fdd-rx-rate-2tx-enable;
 

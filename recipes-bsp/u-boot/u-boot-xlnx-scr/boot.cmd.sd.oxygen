@@ -1,0 +1,19 @@
+@@PRE_BOOTENV@@
+
+
+
+setenv sdbootdev 1
+setenv kernel_load_address=0x80000
+setenv devicetree_load_address=0x4000000
+setenv bitfile_load_address=0x4000000
+setenv machine_name=oxygen
+setenv uenvcmd=run bootkernel
+setenv devicetree_image=oxygen.dtb
+setenv kernel_image=image
+setenv bootargs=earlycon clk_ignore_unused root=/dev/mmcblk1p2 rw rootwait
+setenv append_fpgadev=env set bootargs ${bootargs} fpgadev=${fpgadev}
+setenv loadkernel=fatload mmc 1 ${kernel_load_address} ${kernel_image}
+setenv loaddtb=fatload mmc 1 ${devicetree_load_address} ${devicetree_image}
+setenv loadbitfile=fatload mmc 1 ${bitfile_load_address} download.${fpgadev}.bin && fpga load 0 ${bitfile_load_address} $filesize
+setenv sdboot=run append_fpgadev && run loadbitfile && run loadkernel && run loaddtb && booti ${kernel_load_address} - ${devicetree_load_address}
+setenv modeboot=sdboot
