@@ -31,4 +31,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     device-tree-oxygen \
     python3-gunicorn \
     kernel-devsrc \
+    cryptsetup \
+    sudo \
+    connection \
 "

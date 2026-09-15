@@ -13,6 +13,7 @@ SRC_URI:append = " \
         file://BISMUTH-2_0-0.dts \
         file://SELENIUM-1_0-0.dts \
         file://TELLURIUM-1_0-0.dts \
+        file://TELLURIUM_HP-1_0-0.dts \
         file://ARGON-1_0-0.dts \
 "
 INSANE_SKIP:${PN} ="installed-vs-shipped"
