@@ -16,7 +16,8 @@ COMPATIBLE_MACHINE = "oxygen"
 
 HW_BD = "linux_bd"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
+
 
 PROVIDES = " \
     virtual/bitstream \

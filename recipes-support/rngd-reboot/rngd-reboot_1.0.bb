@@ -15,6 +15,6 @@ FILES:${PN} += "${systemd_system_unitdir}/rngd-reboot.service"
 do_install() {
     # For systemd
         install -d ${D}/${systemd_unitdir}/system
-        install -D -m 0644 ${WORKDIR}/rngd-reboot.service ${D}${systemd_system_unitdir}/rngd-reboot.service
+        install -D -m 0644 ${UNPACKDIR}/rngd-reboot.service ${D}${systemd_system_unitdir}/rngd-reboot.service
     
 }

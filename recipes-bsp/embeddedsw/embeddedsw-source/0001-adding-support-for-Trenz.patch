@@ -3,6 +3,7 @@ From: Toby Flynn <tflynn@redwiretechnology.com>
 Date: Thu, 26 Jan 2023 05:33:39 -0500
 Subject: [PATCH] adding support for Trenz
 
+Upstream-Status: Denied [custom configuration]
 ---
  .../zynqmp_fsbl/src/scatter_a53_64.scat       |   5 -
  lib/sw_apps/zynqmp_fsbl/src/scatter_r5.scat   |   5 -

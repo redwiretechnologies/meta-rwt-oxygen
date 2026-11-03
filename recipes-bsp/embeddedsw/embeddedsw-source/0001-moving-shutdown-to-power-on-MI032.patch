@@ -3,6 +3,7 @@ From: Toby Flynn <tflynn@redwiretechnology.com>
 Date: Wed, 18 Jun 2025 16:07:38 -0400
 Subject: [PATCH] movinf-shutdown-to-power-on-MI032
 
+Upstream-Status: Denied [custom configuration]
 ---
  lib/sw_apps/zynqmp_pmufw/src/xpfw_config.h | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)

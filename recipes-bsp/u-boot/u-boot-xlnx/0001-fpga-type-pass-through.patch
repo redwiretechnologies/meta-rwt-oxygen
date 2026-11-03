@@ -3,6 +3,7 @@ From: Toby Flynn <tflynn@redwiretechnology.com>
 Date: Fri, 1 Dec 2023 09:38:01 -0500
 Subject: [PATCH] fpga type pass through
 
+Upstream-Status: Denied [custom configuration]
 ---
  board/xilinx/zynqmp/zynqmp.c | 6 ++++++
  1 file changed, 6 insertions(+)

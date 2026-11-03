@@ -12,6 +12,7 @@ inherit devicetree image-artifact-names
 
 PROVIDES = "virtual/dtb"
 
+
 FPGA_MNGR_RECONFIG_ENABLE = "1"
 # common zynq include
 #SRC_URI_append_zynq = " file://zynq-7000-qspi-dummy.dtsi"

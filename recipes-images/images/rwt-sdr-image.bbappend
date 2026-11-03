@@ -1,3 +1,5 @@
+include conf/machine/include/xilinx-wic.inc
+
 CORE_IMAGE_EXTRA_INSTALL += "\
     bitfiles-default \
     bitfiles-griio \
@@ -34,4 +36,5 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     cryptsetup \
     sudo \
     connection \
+    soapyrtlsdr \
 "

@@ -1,9 +1,9 @@
 SUMMARY = "Helper script to control USB-C OTG modes"
 DESCRIPTION = "Helper script to control USB-C OTG modes"
-LICENSE = "GPLv3"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464"
+LICENSE = "Apache-2.0"
+LIC_FILES_CHKSUM = "file://${UNPACKDIR}/LICENSE;md5=51da0b8a3b91bf69984a5cdaed85e3e8"
 
-DEPENDS ="libgpiod i2c-tools"
+DEPENDS = "libgpiod i2c-tools"
 
 inherit systemd
 
@@ -13,7 +13,6 @@ SRC_URI = "\
     file://usbc-helper.conf \
     file://LICENSE \
 	"
-S = "${WORKDIR}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 LDFLAGS:append = " -lgpiod -li2c "
@@ -22,16 +21,16 @@ SYSTEMD_SERVICE:${PN} = "usbc-helper.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
 do_compile() {
-	${CC} -Wall usbc_helper.c ${LDFLAGS} -o usbc_helper
+	${CC} -Wall  ${UNPACKDIR}/usbc_helper.c ${LDFLAGS} -o usbc_helper
 }
 
 do_install() {
-    install -Dm 0644 ${S}/usbc-helper.conf ${D}${sysconfdir}/usbc-helper.conf
-    install -Dm 0755 ${S}/usbc_helper ${D}${bindir}/usbc_helper
+    install -Dm 0644 ${UNPACKDIR}/usbc-helper.conf ${D}${sysconfdir}/usbc-helper.conf
+    install -Dm 0755 ${B}/usbc_helper ${D}${bindir}/usbc_helper
 
     # For systemd
     if ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'true', 'false', d)}; then
-        install -D -m 0644 ${S}/usbc-helper.service ${D}${systemd_system_unitdir}/usbc-helper.service
+        install -D -m 0644 ${UNPACKDIR}/usbc-helper.service ${D}${systemd_system_unitdir}/usbc-helper.service
         sed -i -e 's,@BINDIR@,${bindir},g' \
             ${D}${systemd_system_unitdir}/usbc-helper.service
     fi

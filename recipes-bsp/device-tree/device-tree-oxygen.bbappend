@@ -16,7 +16,7 @@ SRC_URI:append = " \
         file://TELLURIUM_HP-1_0-0.dts \
         file://ARGON-1_0-0.dts \
 "
-INSANE_SKIP:${PN} ="installed-vs-shipped"
+INSANE_SKIP:${PN} = "installed-vs-shipped"
 FILES:${PN} +=  " ${libdir}/firmware/rwt/*.dtbo "
 
 DEPENDS += "python3-dtc-native"

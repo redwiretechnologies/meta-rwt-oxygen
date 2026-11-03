@@ -3,6 +3,7 @@ From: John <j.hartfiel@trenz-electronic.de>
 Date: Fri, 20 Dec 2024 08:16:36 +0100
 Subject: [PATCH] patch
 
+Upstream-Status: Denied [custom configuration]
 ---
  lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.c |  5 +++
  lib/sw_apps/zynqmp_fsbl/src/xfsbl_board.h |  5 +++

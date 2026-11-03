@@ -18,7 +18,7 @@ SRC_URI += "file://usbmods.cfg \
             file://power.cfg  \
             file://0001-put-clcks-back-to-support-fclk.patch \
             "
-KERNEL_VERSION_SANITY_SKIP="1"
+KERNEL_VERSION_SANITY_SKIP = "1"
 # The patch was suggested by Xilinx to speed up USB3; however, g_ether fails
 # whenever I try to use it.
 #

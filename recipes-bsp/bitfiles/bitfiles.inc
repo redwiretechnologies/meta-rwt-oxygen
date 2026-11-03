@@ -16,7 +16,6 @@ FILES:${PN} = " \
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/bitfiles:"
 
-S = "${WORKDIR}"
 B = "${WORKDIR}/build"
 
 SRC_URI:append := " \
@@ -25,7 +24,7 @@ SRC_URI:append := " \
     file://oxygen-transceiver-spi.dtsi \
     "
 YAML_OVERLAY_CUSTOM_DTS = "pl-final.dts"
-DTS_FILES_PATH ?= "${S}"
+DTS_FILES_PATH ?= "${UNPACKDIR}"
 DTS_INCLUDE ?= "${DTS_FILES_PATH}"
 DT_PADDING_SIZE ?= "0x1000"
 #DEVICETREE_FLAGS ?= " 
@@ -58,7 +57,7 @@ do_compile() {
     dtc ${DEVICETREE_FLAGS} -I dts -O dtb -o overlay.dtbo ${DTS_NAME}.pp
     
     
-    all_xsas=${S}/*/system.xsa
+    all_xsas=${UNPACKDIR}/*/system.xsa
     for xsa in ${all_xsas}; do
         bitfile=$(unzip -l ${xsa} | awk '{print $NF}' | grep ".bit$")
         device=$(dirname ${xsa} | xargs -n1 basename)
@@ -66,7 +65,7 @@ do_compile() {
         unzip -o ${xsa} ${bitfile} -d ${B}/${device}/
         mv ${B}/${device}/${bitfile} ${B}/${device}/download.bit
 
-        (cd ${B}/${device} && ${XILINX_SDK_TOOLCHAIN}/bin/bootgen -image ${S}/bootgen.bif -arch zynqmp -w -o download.bin)
+        (cd ${B}/${device} && ${XILINX_SDK_TOOLCHAIN}/bin/bootgen -image ${UNPACKDIR}/bootgen.bif -arch zynqmp -w -o download.bin)
     done
 }
 

@@ -3,6 +3,7 @@ From: Toby Flynn <tflynn@redwiretechnology.com>
 Date: Tue, 30 Jul 2024 08:06:15 -0400
 Subject: [PATCH] adding Trenz 0820 support
 
+Upstream-Status: Denied [custom configuration]
 ---
  lib/sw_apps/zynqmp_fsbl/src/scatter_r5.scat   |   0
  .../zynqmp_fsbl/src/te_Si5338-Registers.h     | 437 ++++++++++++

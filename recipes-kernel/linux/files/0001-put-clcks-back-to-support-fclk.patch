@@ -3,6 +3,9 @@ From: Toby Flynn <tflynn@redwiretechnology.com>
 Date: Fri, 17 Apr 2026 08:44:35 -0400
 Subject: [PATCH] put clcks back to support fclk
 
+
+Upstream-Status: Denied [custom configuration]
+
 ---
  .../arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi | 24 +++++++++++++++++++
  1 file changed, 24 insertions(+)

@@ -3,6 +3,7 @@ From: Toby Flynn <tflynn@redwiretechnology.com>
 Date: Fri, 15 Jul 2022 12:02:40 -0400
 Subject: [PATCH] fixing shutdown to power down on MIO32
 
+Upstream-Status: Denied [custom configuration]
 ---
  lib/sw_apps/zynqmp_pmufw/src/xpfw_config.h | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)

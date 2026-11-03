@@ -10,14 +10,14 @@ EXTRA_OEMAKE += " EXT_DTB=${DEPLOY_DIR_IMAGE}/oxygen.dtb"
 DTB_FILE_NAME = "oxygen"
 BASE_DTS = "oxygen"
 CONFIG_DTFILE = "oxygen"
-DEVICE_TREE_NAME ="oxygen.dtb"
+DEVICE_TREE_NAME = "oxygen.dtb"
 
 #do_configure[depends] += "device-tree-oxygen:do_deploy"
 
 do_configure:append () {
 
-	install ${WORKDIR}/platform-top.h ${S}/include/configs/
-	install ${WORKDIR}/config2.cfg ${S}/configs/${UBOOT_MACHINE}
+	install ${UNPACKDIR}/platform-top.h ${S}/include/configs/
+	install ${UNPACKDIR}/config2.cfg ${S}/configs/${UBOOT_MACHINE}
 
 }
 
