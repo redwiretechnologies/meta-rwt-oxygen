@@ -2,7 +2,8 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     bitfiles-default \
     bitfiles-griio \
     bitfiles-default-chan \
-    misc-gether-files \
+    usb-gadget \
+    dnsmasq \
     usbc-helper \
     rngd-reboot \
     base-files \
@@ -31,4 +32,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     device-tree-oxygen \
     python3-gunicorn \
     kernel-devsrc \
+    cryptsetup \
+    sudo \
+    connection \
 "

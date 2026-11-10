@@ -1,0 +1,17 @@
+[Unit]
+Description=USB NCM network gadget (configfs, jumbo frames)
+DefaultDependencies=no
+Wants=sys-kernel-config.mount
+After=sys-kernel-config.mount systemd-modules-load.service
+# Create usb0 before NetworkManager and dnsmasq start, so they find it.
+Before=NetworkManager.service dnsmasq.service network-pre.target
+Wants=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/sbin/usb-gadget-configfs up
+ExecStop=/usr/sbin/usb-gadget-configfs down
+
+[Install]
+WantedBy=multi-user.target
