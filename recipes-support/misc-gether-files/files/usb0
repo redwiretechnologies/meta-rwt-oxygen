@@ -1,9 +1,9 @@
 [connection]
-id=usb0
-uuid=3c9b3c9d-095d-310d-8e9a-a7427fcca9fc
+id=Wired connection 1
+uuid=470c22c5-f7b3-31d9-bbdd-f598f5140fe6
 type=ethernet
 autoconnect-priority=-999
-permissions=
+interface-name=usb0
 timestamp=1563369983
 
 [ethernet]

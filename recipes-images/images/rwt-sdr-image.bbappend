@@ -4,6 +4,7 @@ CORE_IMAGE_EXTRA_INSTALL += "\
     bitfiles-default-chan \
     usb-gadget \
     dnsmasq \
+    misc-gether-files \
     usbc-helper \
     rngd-reboot \
     base-files \
